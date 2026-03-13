@@ -1,0 +1,410 @@
+<%
+  // Fungsi Helper yang sama persis dengan order.ejs
+  function getCategoryIcon(category) {
+    const icons = {
+      'ayam': 'fas fa-drumstick-bite',
+      'nasi': 'fas fa-bowl-rice',
+      'minuman': 'fas fa-glass-water',
+      'side_dish': 'fas fa-plate-wheat',
+      'paket': 'fas fa-box',
+      'makanan_berat': 'fas fa-utensils',
+      'cemilan': 'fas fa-cookie',
+      'dessert': 'fas fa-ice-cream'
+    };
+    return icons[category] || 'fas fa-utensils';
+  }
+  
+  function getCategoryName(category) {
+    const names = {
+      'ayam': 'Ayam',
+      'nasi': 'Nasi',
+      'minuman': 'Minuman',
+      'side_dish': 'Side Dish',
+      'paket': 'Paket',
+      'makanan_berat': 'Makanan Berat',
+      'cemilan': 'Cemilan',
+      'dessert': 'Dessert'
+    };
+    return names[category] || category;
+  }
+%>
+
+<%- include('../../layouts/customer-start', { 
+  title: "Ayam Geprek Arema",
+  page: 'restaurant', 
+  user: user,
+  cartCount: typeof cartCount !== 'undefined' ? cartCount : 0
+}) %>
+
+<div class="container-fluid mt-4 mb-5 px-xl-5">
+    <div class="row g-4">
+        
+        <div class="col-lg-3">
+            <%- include('navbar/Navleft', {
+                restoName: "Ayam Geprek Arema",
+                restoRating: "4.9",
+                restoReviews: "1000+",
+                restoAddress: "Jl. Cepat Saji Raya No. 1, Jakarta Selatan",
+                restoHours: "Buka 08:00 - 22:00 (Senin - Minggu)"
+            }) %>
+        </div>
+
+        <div class="col-lg-9">
+            
+            <div id="no-menu-msg" class="text-center py-5 bg-white rounded-custom shadow-sm mb-4" style="display: none;">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted fw-bold">Menu tidak ditemukan</h5>
+                <p class="text-muted mb-0">Coba cari dengan kata kunci lain.</p>
+            </div>
+
+            <% const orderedCategories = ['ayam','nasi','minuman','side_dish','paket']; %>
+            <% orderedCategories.forEach(function(cat) { %>
+                <% const items = categories[cat] || []; %>
+                <% if (!items.length) { return; } %>
+                
+                <div class="category-section p-4 mb-4 rounded-custom shadow-sm bg-white" id="kat-<%= cat %>">
+                    <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-3">
+                        <h4 class="category-title text-capitalize mb-0">
+                            <i class="category-icon <%= getCategoryIcon(cat) %>"></i>
+                            <%= getCategoryName(cat) %>
+                        </h4>
+                        <span class="badge bg-secondary"><%= items.length %> item</span>
+                    </div>
+                    
+                    <div class="row g-3">
+                        <% items.forEach(function(menu) { %>
+                            
+                            <div class="col-md-6 col-lg-4 col-xl-4 menu-item-wrapper">
+                                <div class="menu-card h-100 border-0 shadow-sm hover-lift">
+                                    <div class="menu-image-container js-quick-view" 
+                                         data-menu-id="<%= menu.id %>" 
+                                         data-menu-name="<%= menu.name %>" 
+                                         data-menu-price="<%= menu.price %>" 
+                                         data-menu-desc="<%= menu.description || '' %>" 
+                                         data-menu-image="<%= menu.image || '' %>" 
+                                         data-menu-category="<%= menu.category %>"
+                                         style="cursor:pointer">
+                                        <img src="<%= menu.image ? '/uploads/' + menu.image : '/images/placeholders/menu.svg' %>" class="menu-image w-100 h-100" style="object-fit: cover;" alt="<%= menu.name %>">
+                                        
+                                        <div class="menu-badges position-absolute top-0 start-0 p-2">
+                                            <% if (menu.is_promo) { %><span class="badge bg-danger badge-promo"><i class="fas fa-fire me-1"></i>Promo</span><% } %>
+                                            <% if (menu.is_new) { %><span class="badge bg-success badge-new"><i class="fas fa-star me-1"></i>Baru</span><% } %>
+                                            <% if (menu.is_bestseller) { %><span class="badge bg-warning text-dark badge-bestseller"><i class="fas fa-crown me-1"></i>Best Seller</span><% } %>
+                                        </div>
+                                        
+                                        <div class="menu-overlay">
+                                            <button class="btn btn-light btn-sm js-quick-view"
+                                                    data-menu-id="<%= menu.id %>" 
+                                                    data-menu-name="<%= menu.name %>" 
+                                                    data-menu-price="<%= menu.price %>" 
+                                                    data-menu-desc="<%= menu.description || '' %>" 
+                                                    data-menu-image="<%= menu.image || '' %>" 
+                                                    data-menu-category="<%= menu.category %>">
+                                                <i class="fas fa-eye me-1"></i>Quick View
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="menu-content bg-white d-flex flex-column p-3">
+                                        <div class="menu-header d-flex justify-content-between align-items-start mb-2">
+                                            <div class="flex-grow-1">
+                                                <h6 class="menu-title fw-bold text-dark mb-1"><%= menu.name %></h6>
+                                                <span class="menu-price text-primary fw-bold">Rp <%= menu.price.toLocaleString('id-ID') %></span>
+                                            </div>
+                                            <button type="button" class="btn btn-sm btn-outline-danger wishlist-btn ms-2">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                        </div>
+                                        <p class="menu-description text-muted small mb-3 flex-grow-1"><%= (menu.description || '').slice(0,60) %>...</p>
+                                        
+                                        <form action="/customer/order/add" method="POST" class="order-form add-to-cart-form mt-auto">
+                                            <input type="hidden" name="menu_id" value="<%= menu.id %>">
+                                            
+                                            <div class="order-options mb-2">
+                                              <% if (cat === 'ayam') { %>
+                                                <div class="row g-2">
+                                                  <div class="col-6">
+                                                    <label class="form-label small text-muted mb-1">Varian</label>
+                                                    <select name="variant" class="form-select form-select-sm">
+                                                      <option value="tulang">Tulang</option>
+                                                      <option value="tanpa_tulang">Tanpa Tulang</option>
+                                                    </select>
+                                                  </div>
+                                                  <div class="col-6">
+                                                    <label class="form-label small text-muted mb-1">Pedas</label>
+                                                    <select name="spicy_level" class="form-select form-select-sm">
+                                                      <option value="0">Lv 0</option><option value="1">Lv 1</option><option value="2">Lv 2</option><option value="3">Lv 3</option>
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                              <% } else if (cat === 'nasi') { %>
+                                                <div class="row g-2">
+                                                  <div class="col-6">
+                                                    <label class="form-label small text-muted mb-1">Sambal</label>
+                                                    <select name="sambal_type" class="form-select form-select-sm">
+                                                      <option value="biasa">Biasa</option><option value="matah">Matah</option><option value="ijo">Ijo</option>
+                                                    </select>
+                                                  </div>
+                                                  <div class="col-6">
+                                                    <label class="form-label small text-muted mb-1">Pedas</label>
+                                                    <select name="spicy_level" class="form-select form-select-sm">
+                                                      <option value="0">Lv 0</option><option value="1">Lv 1</option><option value="2">Lv 2</option>
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                              <% } %>
+                                            </div>
+                                            
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <div class="input-group input-group-sm" style="width: 100px;">
+                                                    <button class="btn btn-outline-secondary px-2" type="button" onclick="decreaseQuantity(this)">-</button>
+                                                    <input type="number" name="quantity" class="form-control text-center px-1" value="1" min="1" readonly>
+                                                    <button class="btn btn-outline-secondary px-2" type="button" onclick="increaseQuantity(this)">+</button>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary btn-sm add-to-cart-btn" data-menu-name="<%= menu.name %>">
+                                                    <i class="fas fa-cart-plus me-1"></i>Pesan
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            <% }) %>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="quickViewModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light border-0">
+        <h5 class="modal-title fw-bold text-primary" id="modalMenuName"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <img id="modalMenuImage" class="img-fluid rounded mb-3 w-100 shadow-sm" style="height: 250px; object-fit: cover;" alt="">
+        <p id="modalMenuDescription" class="text-muted"></p>
+        <h4 class="text-primary fw-bold mb-4" id="modalMenuPrice"></h4>
+        
+        <div class="bg-light p-3 rounded mb-4">
+            <div id="modalOptions"></div>
+        </div>
+        
+        <div class="d-flex align-items-center gap-3">
+          <div class="input-group input-group-lg" style="width: 140px;">
+            <button class="btn btn-outline-secondary" type="button" onclick="modalDecreaseQuantity()">-</button>
+            <input type="number" id="modalQty" class="form-control text-center" min="1" value="1" readonly>
+            <button class="btn btn-outline-secondary" type="button" onclick="modalIncreaseQuantity()">+</button>
+          </div>
+          <button type="button" id="modalAddBtn" class="btn btn-primary btn-lg flex-grow-1" onclick="addQuickViewToCart()">
+            <i class="fas fa-cart-plus me-2"></i>Tambah
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 1. SCRIPT FITUR LIVE SEARCH MENU
+  document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchMenu');
+      const categorySections = document.querySelectorAll('.category-section');
+      const noMenuMsg = document.getElementById('no-menu-msg');
+
+      if(searchInput) {
+          searchInput.addEventListener('keyup', function() {
+              const filter = this.value.toLowerCase();
+              let totalVisibleMenus = 0;
+
+              categorySections.forEach(section => {
+                  const menuItems = section.querySelectorAll('.menu-item-wrapper');
+                  let visibleInCategory = 0;
+
+                  menuItems.forEach(item => {
+                      const title = item.querySelector('.menu-title').textContent.toLowerCase();
+                      const desc = item.querySelector('.menu-description').textContent.toLowerCase();
+                      
+                      if (title.includes(filter) || desc.includes(filter)) {
+                          item.style.display = ''; 
+                          visibleInCategory++;
+                          totalVisibleMenus++;
+                      } else {
+                          item.style.display = 'none';
+                      }
+                  });
+
+                  if (visibleInCategory === 0) {
+                      section.style.display = 'none';
+                  } else {
+                      section.style.display = '';
+                  }
+              });
+
+              if (totalVisibleMenus === 0) {
+                  noMenuMsg.style.display = 'block';
+              } else {
+                  noMenuMsg.style.display = 'none';
+              }
+          });
+      }
+  });
+
+  // 2. SCRIPT QUICK VIEW
+  function quickView(menu) {
+    document.getElementById('modalMenuName').textContent = menu.name;
+    document.getElementById('modalMenuImage').src = menu.image ? '/uploads/' + menu.image : '/images/placeholders/menu.svg';
+    document.getElementById('modalMenuDescription').textContent = menu.description || 'Tidak ada deskripsi';
+    document.getElementById('modalMenuPrice').textContent = 'Rp ' + menu.price.toLocaleString('id-ID');
+    document.getElementById('modalQty').value = 1;
+    document.getElementById('modalAddBtn').dataset.menuId = menu.id;
+    document.getElementById('modalAddBtn').dataset.category = menu.category;
+    renderModalOptions(menu);
+    new bootstrap.Modal(document.getElementById('quickViewModal')).show();
+  }
+  
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('.js-quick-view');
+    if (!el) return;
+    var menu = {
+      id: parseInt(el.dataset.menuId, 10),
+      name: el.dataset.menuName || '',
+      price: Number(el.dataset.menuPrice || 0),
+      description: el.dataset.menuDesc || '',
+      image: el.dataset.menuImage || '',
+      category: el.dataset.menuCategory || ''
+    };
+    quickView(menu);
+  });
+
+  function renderModalOptions(menu) {
+    var html = '';
+    if (menu.category === 'ayam') {
+      html += '<div class="row g-3"><div class="col-6"><label class="form-label fw-bold text-muted small mb-1">Varian</label><select id="modalVariant" class="form-select"><option value="tulang">Tulang</option><option value="tanpa_tulang">Tanpa Tulang</option></select></div></div>';
+    } else {
+      html += '<div class="mb-2"><label class="form-label fw-bold text-muted small mb-1">Level Pedas (Opsional)</label><select id="modalSpicy" class="form-select"><option value="0">Tidak Pedas</option><option value="1">Level 1</option></select></div>';
+    }
+    document.getElementById('modalOptions').innerHTML = html;
+  }
+
+  function modalIncreaseQuantity() {
+    var input = document.getElementById('modalQty');
+    input.value = parseInt(input.value) + 1;
+  }
+  function modalDecreaseQuantity() {
+    var input = document.getElementById('modalQty');
+    if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+  }
+  
+  function updateCartUI(count, total){
+    var navbarBadge = document.querySelector('.navbar .badge');
+    if (navbarBadge && typeof count !== 'undefined') {
+      navbarBadge.textContent = count;
+      navbarBadge.style.display = count > 0 ? 'inline-block' : 'none';
+    }
+  }
+
+  function addQuickViewToCart() {
+    var btn = document.getElementById('modalAddBtn');
+    var id = btn.dataset.menuId;
+    var qty = parseInt(document.getElementById('modalQty').value) || 1;
+    var params = new URLSearchParams();
+    params.append('menu_id', id);
+    params.append('quantity', qty);
+    
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
+    btn.disabled = true;
+
+    fetch('/customer/order/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: params.toString()
+    }).then(r => r.json()).then(data => {
+      if (data && data.success) {
+        updateCartUI(data.cartCount, data.total);
+        bootstrap.Modal.getInstance(document.getElementById('quickViewModal')).hide();
+        alert('Menu berhasil ditambahkan ke keranjang!');
+      } else {
+        alert('Gagal menambahkan ke keranjang');
+      }
+    }).finally(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    });
+  }
+
+  // 3. SCRIPT TOMBOL TAMBAH KURANG QUANTITY CARD
+  function increaseQuantity(button) {
+    const input = button.parentElement.querySelector('input[type="number"]');
+    input.value = parseInt(input.value) + 1;
+  }
+  function decreaseQuantity(button) {
+    const input = button.parentElement.querySelector('input[type="number"]');
+    if (parseInt(input.value) > 1) {
+      input.value = parseInt(input.value) - 1;
+    }
+  }
+
+  // 4. SCRIPT AJAX TAMBAH KERANJANG (Anti Refresh)
+  document.addEventListener('DOMContentLoaded', function() {
+    const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+    addToCartForms.forEach(form => {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const urlParams = new URLSearchParams();
+        for (const [key, value] of formData.entries()) {
+          urlParams.append(key, value);
+        }
+        const submitBtn = this.querySelector('.add-to-cart-btn');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        submitBtn.disabled = true;
+        
+        try {
+          const response = await fetch('/customer/order/add', {
+            method: 'POST',
+            body: urlParams,
+            headers: {
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest',
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          });
+          const data = await response.json();
+          if (response.ok && data.success) {
+            const menuName = submitBtn.dataset.menuName;
+            alert(`${menuName} berhasil ditambahkan ke keranjang!`);
+            updateCartUI(data.cartCount, data.total);
+            this.querySelector('input[name="quantity"]').value = 1;
+          } else {
+            alert(data.message || 'Gagal menambahkan ke keranjang');
+          }
+        } catch (error) {
+          alert('Terjadi kesalahan saat menambahkan ke keranjang');
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+    html { scroll-behavior: smooth; }
+    .category-section { scroll-margin-top: 110px; }
+</style>
+
+<%- include('../../layouts/customer-end') %>

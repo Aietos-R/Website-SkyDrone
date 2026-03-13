@@ -1,0 +1,431 @@
+<%- include('../layouts/customer-start', { 
+  title: 'Keranjang Belanja',
+  page: 'cart',
+  user: user,
+  cartCount: cartCount
+}) %>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card card-custom mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="fas fa-shopping-cart me-2"></i>
+          Keranjang Belanja
+        </h5>
+        <a href="/customer/order" class="btn btn-outline-primary btn-sm">
+          <i class="fas fa-plus me-1"></i>
+          Tambah Menu
+        </a>
+      </div>
+      <div class="card-body p-0">
+        <% if (!cart.length) { %>
+          <div class="empty-cart text-center py-5">
+            <div class="empty-cart-icon mb-4">
+              <i class="fas fa-shopping-basket fa-5x text-muted"></i>
+            </div>
+            <h4 class="text-muted mb-3">Keranjang Masih Kosong</h4>
+            <p class="text-muted mb-4">Ayo tambahkan menu favoritmu dan nikmati promo spesial!</p>
+            <a href="/customer/order" class="btn btn-primary btn-lg">
+              <i class="fas fa-utensils me-2"></i>
+              Lihat Menu
+            </a>
+          </div>
+        <% } else { %>
+          <div class="cart-items-list">
+            <% cart.forEach(function(item, index){ %>
+              <div class="cart-item d-flex align-items-center p-3 border-bottom">
+                <div class="cart-item-image me-3">
+                  <div class="menu-icon">
+                    <i class="fas fa-utensils fa-2x text-primary"></i>
+                  </div>
+                </div>
+                <div class="cart-item-details flex-grow-1">
+                  <h6 class="cart-item-title mb-1"><%= item.name %></h6>
+                  <div class="cart-item-options mb-2">
+                    <% if (item.options.variant) { %>
+                      <span class="badge bg-light text-dark me-1">
+                        <i class="fas fa-tag me-1"></i><%= item.options.variant %>
+                      </span>
+                    <% } %>
+                    <% if (item.options.sambal_type) { %>
+                      <span class="badge bg-warning text-dark me-1">
+                        <i class="fas fa-pepper-hot me-1"></i><%= item.options.sambal_type %>
+                      </span>
+                    <% } %>
+                    <% if (item.options.spicy_level > 0) { %>
+                      <span class="badge bg-danger">
+                        <i class="fas fa-fire me-1"></i>Level <%= item.options.spicy_level %>
+                      </span>
+                    <% } else { %>
+                      <span class="badge bg-success">
+                        <i class="fas fa-snowflake me-1"></i>Tidak Pedas
+                      </span>
+                    <% } %>
+                  </div>
+                  <div class="cart-item-price text-primary fw-bold">
+                    Rp <%= item.price.toLocaleString('id-ID') %> x <%= item.quantity %>
+                  </div>
+                </div>
+                <div class="cart-item-subtotal text-end">
+                  <div class="subtotal-amount text-primary fw-bold mb-2">
+                    Rp <%= (item.price * item.quantity).toLocaleString('id-ID') %>
+                  </div>
+                  <form action="/customer/cart/remove" method="POST" class="d-inline remove-from-cart-form">
+                    <input type="hidden" name="index" value="<%= index %>">
+                    <button type="submit" class="btn btn-outline-danger btn-sm no-loading remove-from-cart-btn" 
+                            data-item-name="<%= item.name %>"
+                            title="Hapus item">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+          
+          <div class="cart-total-section p-3 bg-light">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Ringkasan Belanja</h5>
+              <span class="badge bg-primary" id="cartItemCountBadge"><%= cart.length %> item</span>
+            </div>
+            <div class="total-breakdown">
+              <div class="d-flex justify-content-between mb-2">
+                <span>Subtotal:</span>
+                <span class="fw-bold" id="subtotalAmount">Rp <%= total.toLocaleString('id-ID') %></span>
+              </div>
+              <div class="d-flex justify-content-between mb-2 text-success">
+                <span><i class="fas fa-tag me-1"></i>Diskon Promo:</span>
+                <span>- Rp 0</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2 text-success">
+                <span><i class="fas fa-shipping-fast me-1"></i>Gratis Ongkir:</span>
+                <span>- Rp 0</span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Total Bayar:</h5>
+                <h4 class="mb-0 text-primary fw-bold" id="totalAmount">Rp <%= total.toLocaleString('id-ID') %></h4>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+    
+    <% if (cart.length > 0) { %>
+      <div class="card card-custom">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="fas fa-info-circle me-2"></i>
+            Info Penting
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info mb-0">
+            <h6><i class="fas fa-clock me-2"></i>Jam Operasional</h6>
+            <p class="mb-2">Senin - Minggu: 10:00 - 22:00</p>
+            <h6><i class="fas fa-phone me-2"></i>Hubungi Kami</h6>
+            <p class="mb-0">0812-3456-7890 (WhatsApp/Telepon)</p>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+  
+  <div class="col-lg-4">
+    <% if (cart.length > 0) { %>
+      <div class="card card-custom sticky-checkout">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="fas fa-cash-register me-2"></i>
+            Checkout
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="checkout-summary mb-3">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Total Item:</span>
+              <span class="fw-bold"><%= cart.length %> item</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Subtotal:</span>
+              <span class="fw-bold">Rp <%= total.toLocaleString('id-ID') %></span>
+            </div>
+            <div class="d-flex justify-content-between text-success mb-2">
+              <span>Diskon:</span>
+              <span>- Rp 0</span>
+            </div>
+            <div class="d-flex justify-content-between text-success mb-3">
+              <span>Ongkir:</span>
+              <span class="badge bg-success">GRATIS</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Total Bayar:</h5>
+              <h4 class="mb-0 text-primary fw-bold" id="checkoutTotalAmount">Rp <%= total.toLocaleString('id-ID') %></h4>
+            </div>
+          </div>
+          
+          <form action="/customer/checkout" method="POST">
+            <div class="mb-3">
+              <label class="form-label">Metode Pembayaran</label>
+              <select class="form-select" name="payment_method">
+                <option value="cash">Tunai</option>
+                <option value="transfer">Transfer Bank</option>
+                <option value="qris">QRIS</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Catatan (Opsional)</label>
+              <textarea class="form-control" name="notes" rows="2" 
+                        placeholder="Tambahan catatan untuk pesanan..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-success w-100 btn-lg no-loading" id="checkoutSubmitBtn">
+              <i class="fas fa-check-circle me-2"></i>
+              Pesan Sekarang
+            </button>
+          </form>
+          
+          <div class="mt-3 text-center">
+            <small class="text-muted">
+              <i class="fas fa-shield-alt me-1"></i>
+              Pembayaran aman & terpercaya
+            </small>
+          </div>
+        </div>
+      </div>
+    <% } %>
+    
+    <div class="card card-custom">
+      <div class="card-header">
+        <h6 class="mb-0">
+          <i class="fas fa-gift me-2"></i>
+          Promo Spesial
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="promo-item mb-3 p-2 bg-light rounded">
+          <div class="d-flex align-items-center">
+            <div class="promo-icon me-3">
+              <i class="fas fa-shipping-fast fa-2x text-success"></i>
+            </div>
+            <div>
+              <h6 class="mb-1">Gratis Ongkir</h6>
+              <small class="text-muted">Untuk semua pesanan hari ini</small>
+            </div>
+          </div>
+        </div>
+        <div class="promo-item p-2 bg-light rounded">
+          <div class="d-flex align-items-center">
+            <div class="promo-icon me-3">
+              <i class="fas fa-percentage fa-2x text-warning"></i>
+            </div>
+            <div>
+              <h6 class="mb-1">Cashback 5%</h6>
+              <small class="text-muted">Minimal belanja Rp 50.000</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card-custom {
+    border: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  .empty-cart {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+  
+  .empty-cart-icon {
+    color: #dee2e6;
+  }
+  
+  .cart-item {
+    transition: all 0.3s ease;
+    background: white;
+  }
+  
+  .cart-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+  }
+  
+  .cart-item-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .menu-icon {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  
+  .cart-item-title {
+    color: #495057;
+    font-weight: 600;
+  }
+  
+  .cart-item-options .badge {
+    font-size: 0.75rem;
+    padding: 0.4em 0.6em;
+  }
+  
+  .cart-total-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+  
+  .sticky-checkout {
+    position: sticky;
+    top: 20px;
+  }
+  
+  .checkout-summary {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 10px;
+  }
+  
+  .promo-item {
+    transition: all 0.3s ease;
+  }
+  
+  .promo-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  
+  .promo-icon {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .cart-item {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .cart-item-details {
+      margin: 1rem 0;
+    }
+    
+    .sticky-checkout {
+      position: relative;
+      top: 0;
+    }
+  }
+</style>
+
+<script>
+  // Add some interactive features
+  (function(){
+    function initCartPage(){
+    // Add loading state to checkout button
+    const checkoutForm = document.querySelector('form[action="/customer/checkout"]');
+    if (checkoutForm) {
+      const submitBtn = checkoutForm.querySelector('#checkoutSubmitBtn');
+      if (submitBtn) {
+        submitBtn.classList.add('no-loading');
+      }
+      checkoutForm.addEventListener('submit', function() {
+        const btn = this.querySelector('#checkoutSubmitBtn');
+        if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Memproses...';
+      });
+    }
+    // AJAX handler for remove-from-cart forms
+    const removeFromCartForms = document.querySelectorAll('.remove-from-cart-form');
+    removeFromCartForms.forEach(form => {
+      form.addEventListener('submit', function(e) {
+        const btn = this.querySelector('.remove-from-cart-btn');
+        const name = btn ? btn.dataset.itemName : '';
+        e.preventDefault();
+        const msg = 'Yakin ingin menghapus ' + name + ' dari keranjang?';
+        confirmAction(msg, () => { this.submit(); });
+      });
+    });
+    
+    // Function to update cart totals
+    function updateCartTotals() {
+      const cartItems = document.querySelectorAll('.cart-item');
+      let subtotal = 0;
+      
+      cartItems.forEach(item => {
+        const priceText = item.querySelector('.item-price').textContent.replace('Rp', '').replace(/\./g, '').replace(',', '.');
+        const quantityText = item.querySelector('.item-quantity').textContent;
+        const quantity = parseInt(quantityText.replace('x', '').trim());
+        const price = parseFloat(priceText);
+        
+        subtotal += price * quantity;
+      });
+      
+      // Update subtotal display
+      const subtotalElement = document.querySelector('.subtotal-amount');
+      if (subtotalElement) {
+        subtotalElement.textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+      }
+      
+      // Update total display
+      const totalElement = document.querySelector('.total-amount');
+      if (totalElement) {
+        totalElement.textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+      }
+    }
+    function reindexCartForms(){
+      const forms = document.querySelectorAll('.remove-from-cart-form');
+      forms.forEach((f, i) => {
+        const idx = f.querySelector('input[name="index"]');
+        if (idx) idx.value = String(i);
+      });
+    }
+    
+    // Function to update cart totals from server response
+    function updateCartTotalsFromServer(serverTotal) {
+      // Update subtotal display
+      const subtotalElement = document.querySelector('.subtotal-amount');
+      if (subtotalElement) {
+        subtotalElement.textContent = `Rp ${serverTotal.toLocaleString('id-ID')}`;
+      }
+      
+      // Update total display
+      const totalElement = document.querySelector('.total-amount');
+      if (totalElement) {
+        totalElement.textContent = `Rp ${serverTotal.toLocaleString('id-ID')}`;
+      }
+    }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCartPage);
+    } else {
+      initCartPage();
+    }
+  })();
+</script>
+
+<%- include('../layouts/customer-end') %>

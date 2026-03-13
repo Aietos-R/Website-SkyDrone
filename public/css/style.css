@@ -1,0 +1,56 @@
+:root {
+  --primary: #330066;
+  --dark: #7851A9;
+  --light: #f7f7f7;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--light);
+  color: var(--dark);
+}
+
+.hero-section {
+  background: linear-gradient(135deg, var(--primary), #7851A9);
+  padding: 120px 0;
+}
+
+.hero-logo {
+  width: 120px;
+}
+
+.feature-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.auth-body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary), #ff8e53);
+}
+
+.auth-card {
+  background: #fff;
+  padding: 40px;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.auth-logo {
+  width: 80px;
+}
+
+.brand-logo-img {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+

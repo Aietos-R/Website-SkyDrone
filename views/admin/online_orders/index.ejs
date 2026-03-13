@@ -1,0 +1,311 @@
+<%- include('../../layouts/dashboard-start', { 
+  title: 'Online Orders',
+  page: 'online_orders'
+}) %>
+
+<div class="row mb-4">
+  <div class="col-md-3">
+    <div class="card bg-primary text-white">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="card-title mb-1">Total Pesanan</h6>
+            <h3 class="mb-0"><%= orders.length %></h3>
+          </div>
+          <i class="fas fa-shopping-cart fa-2x opacity-75"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card bg-warning text-dark">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="card-title mb-1">Pending</h6>
+            <h3 class="mb-0"><%= orders.filter(o => o.status === 'pending').length %></h3>
+          </div>
+          <i class="fas fa-clock fa-2x opacity-75"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card bg-success text-white">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="card-title mb-1">Disetujui</h6>
+            <h3 class="mb-0"><%= orders.filter(o => o.status === 'approved').length %></h3>
+          </div>
+          <i class="fas fa-check-circle fa-2x opacity-75"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card bg-danger text-white">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="card-title mb-1">Ditolak</h6>
+            <h3 class="mb-0"><%= orders.filter(o => o.status === 'rejected').length %></h3>
+          </div>
+          <i class="fas fa-times-circle fa-2x opacity-75"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-custom">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">
+      <i class="fas fa-list me-2"></i>
+      Daftar Pesanan Online
+    </h5>
+    <div class="d-flex gap-2">
+      <span class="badge bg-primary"><%= orders.length %> pesanan</span>
+      <% if (orders.filter(o => o.status === 'pending').length > 0) { %>
+        <span class="badge bg-warning text-dark blink"><%= orders.filter(o => o.status === 'pending').length %> pending</span>
+      <% } %>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <% if (orders.length === 0) { %>
+      <div class="text-center py-5">
+        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">Belum ada pesanan online</h5>
+        <p class="text-muted">Pesanan online akan muncul di sini</p>
+      </div>
+    <% } else { %>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th width="12%">Invoice</th>
+              <th width="25%">Pelanggan & Kontak</th>
+              <th width="35%">Detail Pesanan</th>
+              <th width="10%">Status</th>
+              <th width="10%">Total</th>
+              <th width="8%" class="text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% orders.forEach(function(order){ %>
+              <tr class="<%= order.status === 'pending' ? 'table-warning' : '' %>">
+                <td>
+                  <strong class="text-primary"><%= order.invoice %></strong>
+                  <br>
+                  <small class="text-muted"><%= moment(order.created_at).format('DD/MM/YY HH:mm') %></small>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="customer-avatar me-2">
+                      <i class="fas fa-user-circle fa-2x text-primary"></i>
+                    </div>
+                    <div>
+                      <strong><%= order.customer %></strong>
+                      <br>
+                      <small class="text-muted">
+                        <i class="fas fa-phone me-1"></i>
+                        <%= order.phone || 'No phone' %>
+                      </small>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="order-items">
+                    <% order.items.forEach(function(item, index){ %>
+                      <div class="order-item mb-2 p-2 bg-light rounded">
+                        <div class="d-flex justify-content-between align-items-start">
+                          <div class="flex-grow-1">
+                            <strong><%= item.name %></strong>
+                            <% if (item.variant) { %>
+                              <span class="badge bg-secondary ms-1"><%= item.variant %></span>
+                            <% } %>
+                            <br>
+                            <small class="text-muted">
+                              Rp <%= item.price.toLocaleString('id-ID') %> x <%= item.quantity %>
+                            </small>
+                            <% if (item.spicy_level > 0 || item.sambal_type) { %>
+                              <div class="mt-1">
+                                <% if (item.spicy_level > 0) { %>
+                                  <span class="badge bg-danger">
+                                    <i class="fas fa-fire me-1"></i>
+                                    Level <%= item.spicy_level %>
+                                  </span>
+                                <% } %>
+                                <% if (item.sambal_type) { %>
+                                  <span class="badge bg-warning text-dark">
+                                    <%= item.sambal_type %>
+                                  </span>
+                                <% } %>
+                              </div>
+                            <% } %>
+                          </div>
+                          <div class="text-end">
+                            <strong>Rp <%= (item.price * item.quantity).toLocaleString('id-ID') %></strong>
+                          </div>
+                        </div>
+                      </div>
+                    <% }) %>
+                  </div>
+                </td>
+                <td>
+                  <% if (order.status === 'pending') { %>
+                    <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>Pending</span>
+                  <% } else if (order.status === 'paid') { %>
+                    <span class="badge bg-success"><i class="fas fa-qrcode me-1"></i>Paid</span>
+                  <% } else if (order.status === 'approved') { %>
+                    <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Approved</span>
+                  <% } else if (order.status === 'in_kitchen') { %>
+                    <span class="badge bg-info text-dark"><i class="fas fa-utensils me-1"></i>Sedang dibuat</span>
+                  <% } else if (order.status === 'ready') { %>
+                    <span class="badge bg-primary"><i class="fas fa-box me-1"></i>Sudah jadi</span>
+                  <% } else if (order.status === 'driver_picked') { %>
+                    <span class="badge bg-secondary"><i class="fas fa-motorcycle me-1"></i>Diangkut pengemudi</span>
+                  <% } else if (order.status === 'on_delivery') { %>
+                    <span class="badge bg-secondary"><i class="fas fa-truck me-1"></i>Diantar</span>
+                  <% } else if (order.status === 'delivered') { %>
+                    <span class="badge bg-success"><i class="fas fa-home me-1"></i>Sampai</span>
+                  <% } else if (order.status === 'completed') { %>
+                    <span class="badge bg-success"><i class="fas fa-flag-checkered me-1"></i>Selesai</span>
+                  <% } else if (order.status === 'rejected') { %>
+                    <span class="badge bg-danger"><i class="fas fa-times-circle me-1"></i>Rejected</span>
+                  <% } %>
+                </td>
+                <td class="text-end">
+                  <strong class="text-primary">Rp <%= (order.total || 0).toLocaleString('id-ID') %></strong>
+                </td>
+                <td class="text-center">
+                  <% if (order.status === 'pending') { %>
+                    <div class="btn-group-vertical btn-group-sm" role="group">
+                      <form action="/admin/online-orders/<%= order.id %>/approve" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-success btn-sm w-100 mb-1" 
+                                data-confirm-message="Setujui pesanan ini?"
+                                title="Setujui pesanan">
+                          <i class="fas fa-check me-1"></i>ACC
+                        </button>
+                      </form>
+                      <form action="/admin/online-orders/<%= order.id %>/reject" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger btn-sm w-100" 
+                                data-confirm-message="Tolak pesanan ini?"
+                                title="Tolak pesanan">
+                          <i class="fas fa-times me-1"></i>Tolak
+                        </button>
+                      </form>
+                    </div>
+                  <% } else if (order.status === 'paid') { %>
+                    <form action="/admin/online-orders/<%= order.id %>/approve" method="POST" class="d-inline">
+                      <button type="submit" class="btn btn-success btn-sm w-100" 
+                              data-confirm-message="Set ke Approved untuk pesanan berstatus Paid?"
+                              title="Set ke Approved">
+                        <i class="fas fa-check me-1"></i>Set ke Approved
+                      </button>
+                    </form>
+                  <% } else if (order.status !== 'rejected') { %>
+                    <form action="/admin/online-orders/<%= order.id %>/status" method="POST" class="d-inline">
+                      <div class="input-group input-group-sm">
+                        <select name="status" class="form-select form-select-sm">
+                          <option value="approved" <%= order.status==='approved'?'selected':'' %>>Disetujui</option>
+                          <option value="in_kitchen" <%= order.status==='in_kitchen'?'selected':'' %>>Sedang dibuat</option>
+                          <option value="ready" <%= order.status==='ready'?'selected':'' %>>Sudah jadi</option>
+                          <option value="driver_picked" <%= order.status==='driver_picked'?'selected':'' %>>Diangkut pengemudi</option>
+                          <option value="on_delivery" <%= order.status==='on_delivery'?'selected':'' %>>Diantar</option>
+                          <option value="delivered" <%= order.status==='delivered'?'selected':'' %>>Sampai</option>
+                          <option value="completed" <%= order.status==='completed'?'selected':'' %>>Selesai</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">
+                          <i class="fas fa-save"></i>
+                        </button>
+                      </div>
+                    </form>
+                  <% } else { %>
+                    <span class="text-muted">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<style>
+  .card-custom {
+    border: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    border-radius: 15px;
+  }
+  
+  .order-item {
+    border-left: 3px solid #007bff;
+    transition: all 0.3s ease;
+  }
+  
+  .order-item:hover {
+    background-color: #e3f2fd !important;
+    transform: translateX(5px);
+  }
+  
+  .customer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .blink {
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+  
+  .table-warning {
+    background-color: #fff3cd !important;
+  }
+  
+  .btn-group-vertical .btn {
+    border-radius: 5px !important;
+  }
+  
+  .badge {
+    font-size: 0.75em;
+    padding: 0.35em 0.65em;
+  }
+</style>
+
+<script>
+  (function(){
+    function bindConfirm(){
+      var buttons = document.querySelectorAll('button[data-confirm-message]');
+      buttons.forEach(function(btn){
+        var form = btn.closest('form');
+        if (!form) return;
+        btn.addEventListener('click', function(e){
+          e.preventDefault();
+          var message = btn.getAttribute('data-confirm-message') || 'Yakin melanjutkan aksi ini?';
+          confirmAction(message, function(){ form.submit(); });
+        });
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindConfirm);
+    } else {
+      bindConfirm();
+    }
+  })();
+</script>
+
+<%- include('../../layouts/dashboard-end') %>

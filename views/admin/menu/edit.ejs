@@ -1,0 +1,66 @@
+<%- include('../../layouts/dashboard-start', { 
+  title: 'Edit Menu',
+  page: 'menu'
+}) %>
+
+<div class="card card-custom">
+  <div class="card-body">
+    <form action="/admin/menu/update/<%= menu.id %>" method="POST" enctype="multipart/form-data" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Nama Menu</label>
+        <input type="text" class="form-control" name="name" value="<%= menu.name %>" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Kategori</label>
+        <select name="category" class="form-select" required>
+          <option value="ayam" <%= menu.category === 'ayam' ? 'selected' : '' %>>Ayam</option>
+          <option value="nasi" <%= menu.category === 'nasi' ? 'selected' : '' %>>Nasi</option>
+          <option value="minuman" <%= menu.category === 'minuman' ? 'selected' : '' %>>Minuman</option>
+          <option value="side_dish" <%= menu.category === 'side_dish' ? 'selected' : '' %>>Side Dish</option>
+          <option value="paket" <%= menu.category === 'paket' ? 'selected' : '' %>>Paket</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Harga</label>
+        <input type="number" class="form-control" name="price" min="1000" value="<%= menu.price %>" required>
+      </div>
+      <div class="col-md-12">
+        <label class="form-label">Deskripsi</label>
+        <textarea class="form-control" rows="3" name="description" required><%= menu.description %></textarea>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Level Pedas</label>
+        <input type="number" class="form-control" name="spicy_level" min="0" max="3" value="<%= menu.spicy_level %>">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Varian</label>
+        <input type="text" class="form-control" name="variant" value="<%= menu.variant %>">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Status</label>
+        <div class="form-check form-switch mt-2">
+          <input class="form-check-input" type="checkbox" name="is_available" <%= menu.is_available ? 'checked' : '' %>>
+          <label class="form-check-label">Tersedia</label>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Gambar Baru</label>
+        <input type="file" class="form-control" name="image" accept="image/*">
+        <small class="text-muted">Biarkan kosong jika tidak diganti.</small>
+      </div>
+      <div class="col-12 d-flex justify-content-between align-items-center">
+        <div>
+          <small class="text-muted d-block">Gambar saat ini:</small>
+          <img src="<%= menu.image ? '/uploads/' + menu.image : '/images/placeholders/menu.svg' %>" alt="<%= menu.name %>" class="rounded" width="120">
+        </div>
+        <div>
+          <a href="/admin/menu" class="btn btn-secondary">Batal</a>
+          <button type="button" class="btn btn-primary-custom" data-confirm-submit="true" data-confirm-message="Simpan perubahan menu?">Simpan Perubahan</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../../layouts/dashboard-end') %>
+

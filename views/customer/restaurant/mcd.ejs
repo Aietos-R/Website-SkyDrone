@@ -1,0 +1,389 @@
+<%- include('../../layouts/customer-start', { 
+  title: "McDonald's",
+  page: 'restaurant', 
+  user: user,
+  cartCount: typeof cartCount !== 'undefined' ? cartCount : 0
+}) %>
+
+<div class="container-fluid mt-4 mb-5 px-xl-5">
+    <div class="row g-4">
+        
+        <div class="col-lg-3">
+            <%- include('navbar/Navleft', {
+                restoName: "McDonald's",
+                restoRating: "4.9",
+                restoReviews: "1000+",
+                restoAddress: "Jl. Cepat Saji Raya No. 1, Jakarta Selatan",
+                restoHours: "Buka 24 Jam (Senin - Minggu)"
+            }) %>
+        </div>
+
+        <div class="col-lg-9">
+            
+            <div id="no-menu-msg" class="text-center py-5 bg-white rounded-custom shadow-sm mb-4" style="display: none;">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted fw-bold">Menu tidak ditemukan</h5>
+                <p class="text-muted mb-0">Coba cari dengan kata kunci lain.</p>
+            </div>
+
+            <div id="kat-makanan" class="category-section p-4 mb-4 rounded-custom shadow-sm bg-white">
+                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-3">
+                    <h4 class="category-title text-capitalize mb-0">
+                        <i class="category-icon fas fa-hamburger"></i> Makanan Utama
+                    </h4>
+                    <span class="badge bg-secondary">2 item</span>
+                </div>
+                <div class="row g-3">
+                    
+                    <div class="col-md-6 col-lg-4 col-xl-4 menu-item-wrapper">
+                        <div class="menu-card h-100">
+                            <div class="menu-image-container js-quick-view" data-menu-id="991" data-menu-name="PaNas 1 (Ayam McD)" data-menu-price="35000" data-menu-desc="Nasi hangat dengan 1 potong Ayam McD pilihan Anda dan minuman segar." data-menu-image="" data-menu-category="ayam" style="cursor:pointer">
+                                <img src="/images/placeholders/menu.svg" class="menu-image" alt="Ayam McD">
+                                <div class="menu-badges position-absolute top-0 start-0 p-2">
+                                    <span class="badge bg-danger badge-promo"><i class="fas fa-fire me-1"></i>Promo</span>
+                                    <span class="badge bg-warning text-dark badge-bestseller"><i class="fas fa-crown me-1"></i>Best Seller</span>
+                                </div>
+                                <div class="menu-overlay">
+                                    <button class="btn btn-light btn-sm js-quick-view" data-menu-id="991" data-menu-name="PaNas 1 (Ayam McD)" data-menu-price="35000" data-menu-desc="Nasi hangat dengan 1 potong Ayam McD pilihan Anda dan minuman segar." data-menu-image="" data-menu-category="ayam">
+                                        <i class="fas fa-eye me-1"></i>Quick View
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="menu-content">
+                                <div class="menu-header d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6 class="menu-title">PaNas 1 (Ayam McD)</h6>
+                                        <span class="menu-price">Rp 35.000</span>
+                                    </div>
+                                </div>
+                                <p class="menu-description">Nasi hangat dengan 1 potong Ayam McD pilihan Anda...</p>
+                                <form action="/customer/order/add" method="POST" class="order-form add-to-cart-form mt-auto">
+                                    <input type="hidden" name="menu_id" value="991">
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div class="input-group input-group-sm" style="width: 100px;">
+                                            <button class="btn btn-outline-secondary px-2" type="button" onclick="decreaseQuantity(this)">-</button>
+                                            <input type="number" name="quantity" class="form-control text-center px-1" value="1" min="1" readonly>
+                                            <button class="btn btn-outline-secondary px-2" type="button" onclick="increaseQuantity(this)">+</button>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-sm add-to-cart-btn" data-menu-name="PaNas 1 (Ayam McD)"><i class="fas fa-cart-plus me-1"></i>Pesan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 col-xl-4 menu-item-wrapper">
+                        <div class="menu-card h-100">
+                            <div class="menu-image-container js-quick-view" data-menu-id="992" data-menu-name="Big Mac" data-menu-price="45000" data-menu-desc="Burger ikonik dengan dua lapis daging sapi asli..." data-menu-image="" data-menu-category="makanan_berat" style="cursor:pointer">
+                                <img src="/images/placeholders/menu.svg" class="menu-image" alt="Big Mac">
+                                <div class="menu-badges position-absolute top-0 start-0 p-2">
+                                    <span class="badge bg-success badge-new"><i class="fas fa-star me-1"></i>Rekomendasi</span>
+                                </div>
+                                <div class="menu-overlay">
+                                    <button class="btn btn-light btn-sm js-quick-view" data-menu-id="992" data-menu-name="Big Mac" data-menu-price="45000" data-menu-desc="Burger ikonik dengan dua lapis daging sapi asli..." data-menu-image="" data-menu-category="makanan_berat">
+                                        <i class="fas fa-eye me-1"></i>Quick View
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="menu-content">
+                                <div class="menu-header d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6 class="menu-title">Big Mac</h6>
+                                        <span class="menu-price">Rp 45.000</span>
+                                    </div>
+                                </div>
+                                <p class="menu-description">Burger ikonik dengan dua lapis daging sapi asli...</p>
+                                <form action="/customer/order/add" method="POST" class="order-form add-to-cart-form mt-auto">
+                                    <input type="hidden" name="menu_id" value="992">
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div class="input-group input-group-sm" style="width: 100px;">
+                                            <button class="btn btn-outline-secondary px-2" type="button" onclick="decreaseQuantity(this)">-</button>
+                                            <input type="number" name="quantity" class="form-control text-center px-1" value="1" min="1" readonly>
+                                            <button class="btn btn-outline-secondary px-2" type="button" onclick="increaseQuantity(this)">+</button>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-sm add-to-cart-btn" data-menu-name="Big Mac"><i class="fas fa-cart-plus me-1"></i>Pesan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="kat-minuman" class="category-section p-4 mb-5 rounded-custom shadow-sm bg-white">
+                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-3">
+                    <h4 class="category-title text-capitalize mb-0">
+                        <i class="category-icon fas fa-glass-water"></i> Minuman Segar
+                    </h4>
+                    <span class="badge bg-secondary">1 item</span>
+                </div>
+                <div class="row g-3">
+                    
+                    <div class="col-md-6 col-lg-4 col-xl-4 menu-item-wrapper">
+                        <div class="menu-card h-100">
+                            <div class="menu-image-container js-quick-view" data-menu-id="993" data-menu-name="Coca Cola McFloat" data-menu-price="15000" data-menu-desc="Minuman soda segar dengan topping es krim vanilla." data-menu-image="" data-menu-category="minuman">
+                                <img src="/images/placeholders/menu.svg" class="menu-image" alt="Minuman">
+                                <div class="menu-overlay">
+                                    <button class="btn btn-light btn-sm js-quick-view" data-menu-id="993" data-menu-name="Coca Cola McFloat" data-menu-price="15000" data-menu-desc="Minuman soda segar..." data-menu-image="" data-menu-category="minuman">
+                                        <i class="fas fa-eye me-1"></i>Quick View
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="menu-content">
+                                <div class="menu-header d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6 class="menu-title">Coca Cola McFloat</h6>
+                                        <span class="menu-price">Rp 15.000</span>
+                                    </div>
+                                </div>
+                                <p class="menu-description">Minuman soda segar dengan topping es krim vanilla.</p>
+                                <form action="/customer/order/add" method="POST" class="order-form add-to-cart-form mt-auto">
+                                    <input type="hidden" name="menu_id" value="993">
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div class="input-group input-group-sm" style="width: 100px;">
+                                            <button class="btn btn-outline-secondary px-2" type="button" onclick="decreaseQuantity(this)">-</button>
+                                            <input type="number" name="quantity" class="form-control text-center px-1" value="1" min="1" readonly>
+                                            <button class="btn btn-outline-secondary px-2" type="button" onclick="increaseQuantity(this)">+</button>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-sm add-to-cart-btn" data-menu-name="Coca Cola McFloat"><i class="fas fa-cart-plus me-1"></i>Pesan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="quickViewModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light border-0">
+        <h5 class="modal-title fw-bold text-primary" id="modalMenuName"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4">
+        <img id="modalMenuImage" class="img-fluid rounded mb-3 w-100 shadow-sm" style="height: 250px; object-fit: cover;" alt="">
+        <p id="modalMenuDescription" class="text-muted"></p>
+        <h4 class="text-primary fw-bold mb-4" id="modalMenuPrice"></h4>
+        <div class="bg-light p-3 rounded mb-4"><div id="modalOptions"></div></div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="input-group input-group-lg" style="width: 140px;">
+            <button class="btn btn-outline-secondary" type="button" onclick="modalDecreaseQuantity()">-</button>
+            <input type="number" id="modalQty" class="form-control text-center" min="1" value="1" readonly>
+            <button class="btn btn-outline-secondary" type="button" onclick="modalIncreaseQuantity()">+</button>
+          </div>
+          <button type="button" id="modalAddBtn" class="btn btn-primary btn-lg flex-grow-1" onclick="addQuickViewToCart()"><i class="fas fa-cart-plus me-2"></i>Tambah</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ==========================================
+  // SCRIPT FITUR LIVE SEARCH MENU
+  // ==========================================
+  document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchMenu');
+      const categorySections = document.querySelectorAll('.category-section');
+      const noMenuMsg = document.getElementById('no-menu-msg');
+
+      if(searchInput) {
+          searchInput.addEventListener('keyup', function() {
+              const filter = this.value.toLowerCase();
+              let totalVisibleMenus = 0;
+
+              categorySections.forEach(section => {
+                  const menuItems = section.querySelectorAll('.menu-item-wrapper');
+                  let visibleInCategory = 0;
+
+                  menuItems.forEach(item => {
+                      const title = item.querySelector('.menu-title').textContent.toLowerCase();
+                      const desc = item.querySelector('.menu-description').textContent.toLowerCase();
+                      
+                      if (title.includes(filter) || desc.includes(filter)) {
+                          item.style.display = ''; // Tampilkan
+                          visibleInCategory++;
+                          totalVisibleMenus++;
+                      } else {
+                          item.style.display = 'none'; // Sembunyikan
+                      }
+                  });
+
+                  // Jika dalam 1 kategori (misal: Minuman) tidak ada yang cocok, sembunyikan judul kategorinya
+                  if (visibleInCategory === 0) {
+                      section.style.display = 'none';
+                  } else {
+                      section.style.display = '';
+                  }
+              });
+
+              // Jika tidak ada satu pun menu yang cocok, tampilkan pesan
+              if (totalVisibleMenus === 0) {
+                  noMenuMsg.style.display = 'block';
+              } else {
+                  noMenuMsg.style.display = 'none';
+              }
+          });
+      }
+  });
+
+  // ==========================================
+  // SCRIPT QUICK VIEW & CART (Sama seperti sebelumnya)
+  // ==========================================
+  function quickView(menu) {
+    document.getElementById('modalMenuName').textContent = menu.name;
+    document.getElementById('modalMenuImage').src = menu.image ? '/uploads/' + menu.image : '/images/placeholders/menu.svg';
+    document.getElementById('modalMenuDescription').textContent = menu.description || 'Tidak ada deskripsi';
+    document.getElementById('modalMenuPrice').textContent = 'Rp ' + menu.price.toLocaleString('id-ID');
+    document.getElementById('modalQty').value = 1;
+    document.getElementById('modalAddBtn').dataset.menuId = menu.id;
+    document.getElementById('modalAddBtn').dataset.category = menu.category;
+    renderModalOptions(menu);
+    new bootstrap.Modal(document.getElementById('quickViewModal')).show();
+  }
+  
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('.js-quick-view');
+    if (!el) return;
+    var menu = {
+      id: parseInt(el.dataset.menuId, 10),
+      name: el.dataset.menuName || '',
+      price: Number(el.dataset.menuPrice || 0),
+      description: el.dataset.menuDesc || '',
+      image: el.dataset.menuImage || '',
+      category: el.dataset.menuCategory || ''
+    };
+    quickView(menu);
+  });
+
+  function renderModalOptions(menu) {
+    var html = '';
+    if (menu.category === 'ayam') {
+      html += '<div class="row g-3"><div class="col-6"><label class="form-label fw-bold text-muted small mb-1">Varian</label><select id="modalVariant" class="form-select"><option value="tulang">Tulang</option><option value="tanpa_tulang">Tanpa Tulang</option></select></div></div>';
+    } else {
+      html += '<div class="mb-2"><label class="form-label fw-bold text-muted small mb-1">Level Pedas (Opsional)</label><select id="modalSpicy" class="form-select"><option value="0">Tidak Pedas</option><option value="1">Level 1</option></select></div>';
+    }
+    document.getElementById('modalOptions').innerHTML = html;
+  }
+  function modalIncreaseQuantity() {
+    var input = document.getElementById('modalQty');
+    input.value = parseInt(input.value) + 1;
+  }
+  function modalDecreaseQuantity() {
+    var input = document.getElementById('modalQty');
+    if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+  }
+  
+  function updateCartUI(count, total){
+    var navbarBadge = document.querySelector('.navbar .badge');
+    if (navbarBadge && typeof count !== 'undefined') {
+      navbarBadge.textContent = count;
+      navbarBadge.style.display = count > 0 ? 'inline-block' : 'none';
+    }
+  }
+
+  function addQuickViewToCart() {
+    var btn = document.getElementById('modalAddBtn');
+    var id = btn.dataset.menuId;
+    var qty = parseInt(document.getElementById('modalQty').value) || 1;
+    var params = new URLSearchParams();
+    params.append('menu_id', id);
+    params.append('quantity', qty);
+    
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
+    btn.disabled = true;
+
+    fetch('/customer/order/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: params.toString()
+    }).then(r => r.json()).then(data => {
+      if (data && data.success) {
+        updateCartUI(data.cartCount, data.total);
+        bootstrap.Modal.getInstance(document.getElementById('quickViewModal')).hide();
+        alert('Menu berhasil ditambahkan ke keranjang!');
+      } else {
+        alert('Gagal menambahkan ke keranjang');
+      }
+    }).finally(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    });
+  }
+
+  function increaseQuantity(button) {
+    const input = button.parentElement.querySelector('input[type="number"]');
+    input.value = parseInt(input.value) + 1;
+  }
+  function decreaseQuantity(button) {
+    const input = button.parentElement.querySelector('input[type="number"]');
+    if (parseInt(input.value) > 1) {
+      input.value = parseInt(input.value) - 1;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+    addToCartForms.forEach(form => {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const urlParams = new URLSearchParams();
+        for (const [key, value] of formData.entries()) {
+          urlParams.append(key, value);
+        }
+        const submitBtn = this.querySelector('.add-to-cart-btn');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        submitBtn.disabled = true;
+        
+        try {
+          const response = await fetch('/customer/order/add', {
+            method: 'POST',
+            body: urlParams,
+            headers: {
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest',
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          });
+          const data = await response.json();
+          if (response.ok && data.success) {
+            const menuName = submitBtn.dataset.menuName;
+            alert(`${menuName} berhasil ditambahkan ke keranjang!`);
+            updateCartUI(data.cartCount, data.total);
+            this.querySelector('input[name="quantity"]').value = 1;
+          } else {
+            alert(data.message || 'Gagal menambahkan ke keranjang');
+          }
+        } catch (error) {
+          alert('Terjadi kesalahan saat menambahkan ke keranjang');
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+    html { scroll-behavior: smooth; }
+    .category-section { scroll-margin-top: 110px; }
+</style>
+
+<%- include('../../layouts/customer-end') %>

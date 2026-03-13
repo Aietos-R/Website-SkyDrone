@@ -1,0 +1,103 @@
+<%- include('../layouts/customer-start', {
+  title: 'Reservasi Meja',
+  page: 'reserve',
+  user: user,
+  cartCount: cartCount
+}) %>
+
+<div class="container py-4">
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card card-custom mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><i class="fas fa-chair me-2"></i>Reservasi Meja</h5>
+          <a href="/customer/order" class="btn btn-outline-secondary btn-sm"><i class="fas fa-utensils me-1"></i>Kembali ke Pemesanan Online</a>
+        </div>
+        <div class="card-body">
+          <form action="/customer/reserve" method="POST" class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Nama</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <input type="text" name="name" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">No. WhatsApp</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                <input type="tel" name="phone" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Tanggal</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                <input type="date" name="date" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Waktu</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                <input type="time" name="time" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Jumlah Orang</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-users"></i></span>
+                <input type="number" name="party_size" class="form-control" min="1" value="2" required>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="alert alert-info d-flex align-items-center" role="alert">
+                <i class="fas fa-info-circle me-2"></i>
+                Mohon tunggu persetujuan admin setelah mengirim reservasi.
+              </div>
+            </div>
+            <div class="col-12 text-end">
+              <button type="submit" class="btn btn-primary btn-lg no-loading"><i class="fas fa-paper-plane me-1"></i>Kirim Reservasi</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-custom mb-4">
+        <div class="card-header">
+          <h6 class="mb-0"><i class="fas fa-store me-2"></i>Informasi Restoran</h6>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mb-3">
+            <li class="mb-2"><i class="fas fa-clock me-2"></i>Senin-Jumat: 10:00 - 22:00</li>
+            <li class="mb-2"><i class="fas fa-clock me-2"></i>Sabtu-Minggu: 09:00 - 23:00</li>
+            <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Jl. Merdeka No. 123, Kota Arema</li>
+            <li class="mb-2"><i class="fas fa-phone me-2"></i>0812-3456-7890</li>
+          </ul>
+          <div class="d-grid gap-2">
+            <a href="/customer/order" class="btn btn-outline-primary"><i class="fas fa-utensils me-1"></i>Lihat Menu</a>
+          </div>
+        </div>
+      </div>
+      <div class="card card-custom">
+        <div class="card-header">
+          <h6 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Kebijakan Reservasi</h6>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><i class="fas fa-check me-2 text-success"></i>Konfirmasi melalui WhatsApp</li>
+            <li class="mb-2"><i class="fas fa-check me-2 text-success"></i>Toleransi keterlambatan 15 menit</li>
+            <li class="mb-2"><i class="fas fa-check me-2 text-success"></i>Reservasi dapat diubah sebelum konfirmasi</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .input-group-text { width: 42px; justify-content: center; }
+</style>
+
+<%- include('../layouts/customer-end') %>

@@ -1,0 +1,75 @@
+<%- include('../layouts/customer-start', {
+  title: 'Pengaturan',
+  page: 'settings',
+  user: user,
+  cartCount: cartCount
+}) %>
+
+<div class="container py-4">
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card card-custom">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Pengaturan Akun</h5>
+        </div>
+        <div class="card-body">
+          <form action="/customer/settings" method="POST" class="row g-3">
+            <div class="col-12">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="notify_whatsapp" id="notifyWhatsapp" <%= settings.notify_whatsapp ? 'checked' : '' %>>
+                <label class="form-check-label" for="notifyWhatsapp">Notifikasi via WhatsApp</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Default Level Pedas</label>
+              <select name="default_spicy_level" class="form-select">
+                <option value="0" <%= settings.default_spicy_level==0 ? 'selected' : '' %>>Tidak Pedas</option>
+                <option value="1" <%= settings.default_spicy_level==1 ? 'selected' : '' %>>Sedikit</option>
+                <option value="2" <%= settings.default_spicy_level==2 ? 'selected' : '' %>>Sedang</option>
+                <option value="3" <%= settings.default_spicy_level==3 ? 'selected' : '' %>>Pedas</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Default Sambal</label>
+              <select name="default_sambal_type" class="form-select">
+                <option value="" <%= !settings.default_sambal_type ? 'selected' : '' %>>Tidak ada</option>
+                <option value="bawang" <%= settings.default_sambal_type==='bawang' ? 'selected' : '' %>>Bawang</option>
+                <option value="cabe" <%= settings.default_sambal_type==='cabe' ? 'selected' : '' %>>Cabe</option>
+                <option value="tomat" <%= settings.default_sambal_type==='tomat' ? 'selected' : '' %>>Tomat</option>
+              </select>
+            </div>
+            <div class="col-12 text-end">
+              <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>Simpan Pengaturan</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card card-custom mb-4">
+        <div class="card-header">
+          <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Tips</h6>
+        </div>
+        <div class="card-body">
+          <p class="text-muted mb-2">Pengaturan ini akan digunakan sebagai default saat memesan menu.</p>
+          <p class="text-muted mb-0">Anda bisa mengubah kapan saja melalui halaman ini.</p>
+        </div>
+      </div>
+      <div class="card card-custom">
+        <div class="card-header">
+          <h6 class="mb-0"><i class="fas fa-eye me-2"></i>Ringkasan Saat Ini</h6>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><i class="fas fa-bell me-2"></i>Notifikasi WhatsApp: <strong><%= settings.notify_whatsapp ? 'Aktif' : 'Nonaktif' %></strong></li>
+            <li class="mb-2"><i class="fas fa-pepper-hot me-2"></i>Level Pedas Default: <strong><%= ({0:'Tidak Pedas',1:'Sedikit',2:'Sedang',3:'Pedas'})[settings.default_spicy_level || 0] %></strong></li>
+            <li class="mb-2"><i class="fas fa-lemon me-2"></i>Sambal Default: <strong><%= settings.default_sambal_type || 'Tidak ada' %></strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/customer-end') %>

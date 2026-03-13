@@ -1,0 +1,170 @@
+<%- include('../layouts/customer-start', { 
+  title: 'Beranda',
+  page: 'beranda',
+  user: user,
+  cartCount: typeof cartCount !== 'undefined' ? cartCount : 0
+}) %>
+
+<div class="hero-section position-relative overflow-hidden" style="padding: 4rem 0 8rem; border-radius: 0 0 3rem 3rem;">
+    <div class="position-absolute rounded-circle" style="width: 300px; height: 300px; background: rgba(255,255,255,0.05); top: -50px; right: -50px;"></div>
+    <div class="position-absolute rounded-circle" style="width: 150px; height: 150px; background: rgba(255,255,255,0.05); bottom: 20px; left: 10%;"></div>
+
+    <div class="container position-relative z-2">
+        <div class="row align-items-center">
+            
+            <div class="col-lg-7 text-center text-lg-start mb-5 mb-lg-0">
+                <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm mb-3 fw-bold border-0" style="font-size: 0.9rem;">
+                    <i class="fas fa-bolt text-warning me-1"></i> Pengiriman Express #1
+                </span>
+                
+                <h1 class="display-4 fw-bold text-white mb-3" style="line-height: 1.2;">
+                    Mau makan apa hari ini,<br> 
+                    <span class="text-warning"><%= user ? user.full_name.split(' ')[0] : 'Pelanggan' %>?</span> 😋
+                </h1>
+                
+                <p class="lead text-white-50 mb-4 fw-light pe-lg-5">
+                    Pesan makanan favoritmu atau kirim barang dalam hitungan menit. SkyDrone siap mengantar dengan aman dan cepat!
+                </p>
+            </div>
+            
+            <div class="col-lg-5 d-none d-lg-block position-relative">
+                <div class="floating-card p-4 rounded-4 shadow-lg text-center ms-auto" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); max-width: 320px; transform: rotate(2deg);">
+                    
+                    <div class="icon-circle mx-auto mb-3 " style="width: 90px; height: 50px;">
+                        <i class="fas fa-helicopter fa-3x text-primary" style="animation: pulse 2s infinite;"></i>
+                    </div>
+                    <h4 class="text-white fw-bold mb-1">SkyDrone Ready</h4>
+                    <p class="text-white-50 mb-0 small">Estimasi tiba: 15 - 30 Menit ⚡</p>
+                    
+                    <div class="position-absolute shadow-sm rounded-pill bg-white px-3 py-2 text-dark fw-bold" style="bottom: -15px; left: -20px; transform: rotate(-5deg);">
+                        <i class="fas fa-star text-warning"></i> 4.9/5
+                    </div>
+                    <div class="position-absolute shadow-sm rounded-pill bg-warning px-3 py-2 text-dark fw-bold" style="top: -15px; right: -20px; transform: rotate(5deg);">
+                        <i class="fas fa-fire"></i> Hot Promo!
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container stats-section" style="margin-top: 3rem; position: relative; z-index: 10;">
+    <div class="row text-center">
+        
+        <div class="col-6 col-md-3 mb-3">
+            <a href="/customer/restaurant" class="text-decoration-none">
+                <div class="stat-card shadow-sm hover-lift" style="padding: 1.5rem 1rem; border-radius: 20px;">
+                    <div class="stat-icon bg-gradient-primary mx-auto">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h6 class="fw-bold mb-0 text-dark">Food</h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-3 mb-3">
+            <a href="#" class="text-decoration-none">
+                <div class="stat-card shadow-sm hover-lift" style="padding: 1.5rem 1rem; border-radius: 20px;">
+                    <div class="stat-icon bg-gradient-info mx-auto">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h6 class="fw-bold mb-0 text-dark">Send</h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-3 mb-3">
+            <a href="/customer/orders" class="text-decoration-none">
+                <div class="stat-card shadow-sm hover-lift" style="padding: 1.5rem 1rem; border-radius: 20px;">
+                    <div class="stat-icon bg-gradient-success mx-auto">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h6 class="fw-bold mb-0 text-dark">Track</h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-3 mb-3">
+            <a href="#" class="text-decoration-none">
+                <div class="stat-card shadow-sm hover-lift" style="padding: 1.5rem 1rem; border-radius: 20px;">
+                    <div class="stat-icon bg-gradient-warning mx-auto">
+                        <i class="fas fa-fire text-white"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h6 class="fw-bold mb-0 text-dark">Promo</h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <h4 class="fw-bold mb-0 text-dark">
+            <i class="fas fa-star text-warning me-2"></i>Rekomendasi Teratas
+        </h4>
+        <a href="/customer/restaurant" class="btn btn-sm btn-outline-primary rounded-pill fw-bold px-3">Lihat Semua</a>
+    </div>
+
+    <div class="row g-4">
+        
+        <div class="col-6 col-md-4">
+            <a href="/customer/restaurant/arema" class="text-decoration-none">
+            <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                <div class="menu-image-container" style="height: 250px;">
+                    <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Foto 1">
+                    <div class="position-absolute top-0 end-0 p-2 z-3">
+                        <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.9</span>
+                    </div>
+                </div>
+                <div class="card-body text-center bg-white p-3">
+                    <h6 class="fw-bold text-dark mb-1 fs-5">Ayam Geprek Arema</h6>
+                    <small class="text-muted">Ayam, Pedas</small>
+                </div>
+            </div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-4">
+            <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                    <div class="menu-image-container" style="height: 250px;">
+                        <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Foto 2">
+                        <div class="position-absolute top-0 end-0 p-2 z-3">
+                            <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.9</span>
+                        </div>
+                    </div>
+                    <div class="card-body text-center bg-white p-3">
+                        <h6 class="fw-bold text-dark mb-1 fs-5">McDonald's</h6>
+                        <small class="text-muted">Cepat Saji, Burger</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-4">
+            <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                <div class="menu-image-container" style="height: 250px;">
+                    <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Foto 3">
+                </div>
+                <div class="card-body text-center bg-white p-3">
+                    <h6 class="fw-bold text-dark mb-1 fs-5">Jasa Kirim Dokumen</h6>
+                    <small class="text-muted">Layanan Kurir</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<%- include('../layouts/customer-end') %>

@@ -1,0 +1,93 @@
+<%- include('../layouts/dashboard-start', { 
+  title: 'Transactions',
+  page: 'transaction',
+  headerButtons: `
+    <a href="/transactions/create" class="btn btn-primary-custom">
+      <i class="fas fa-plus me-2"></i> Transaction Baru
+    </a>
+  `
+}) %>
+
+<div class="card card-custom mb-4">
+  <div class="card-body">
+    <form method="GET" class="row g-3">
+      <div class="col-md-3">
+        <label class="form-label">Tanggal Mulai</label>
+        <input type="date" class="form-control" name="start_date" value="<%= filters.start_date || '' %>">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Tanggal Akhir</label>
+        <input type="date" class="form-control" name="end_date" value="<%= filters.end_date || '' %>">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Metode Pembayaran</label>
+        <select class="form-select" name="payment_method">
+          <option value="">Semua</option>
+          <option value="cash" <%= filters.payment_method === 'cash' ? 'selected' : '' %>>Cash</option>
+          <option value="qris" <%= filters.payment_method === 'qris' ? 'selected' : '' %>>QRIS</option>
+          <option value="debit" <%= filters.payment_method === 'debit' ? 'selected' : '' %>>Debit</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Cari Invoice/Customer</label>
+        <input type="text" class="form-control" name="keyword" value="<%= filters.keyword || '' %>">
+      </div>
+      <div class="col-12 d-flex justify-content-end gap-2">
+        <a href="/transactions" class="btn btn-outline-secondary">Reset</a>
+        <button class="btn btn-primary-custom" type="submit">
+          <i class="fas fa-filter me-2"></i> Filter
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card card-custom table-custom">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>Invoice</th>
+            <th>Tanggal</th>
+            <th>Customer</th>
+            <th>Cashier</th>
+            <th>Items</th>
+            <th>Metode</th>
+            <th class="text-end">Total</th>
+            <th class="text-end">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% transactions.forEach(transaction => { %>
+            <tr>
+              <td><strong><%= transaction.invoice %></strong></td>
+              <td><%= moment(transaction.transaction_date).format('DD/MM/YYYY HH:mm') %></td>
+              <td><%= transaction.customer_name %></td>
+              <td><%= transaction.cashier %></td>
+              <td>
+                <small>
+                  <% transaction.items.forEach(item => { %>
+                    <%= item.quantity %>x <%= item.menu_name %><br>
+                  <% }) %>
+                </small>
+              </td>
+              <td><span class="badge bg-info"><%= transaction.payment_method %></span></td>
+              <td class="text-end">Rp <%= transaction.total.toLocaleString('id-ID') %></td>
+              <td class="text-end">
+                <a href="/transactions/<%= transaction.id %>/print" 
+                   class="btn btn-sm btn-outline-primary" 
+                   target="_blank">
+                  <i class="fas fa-print"></i>
+                </a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/dashboard-end') %>
+

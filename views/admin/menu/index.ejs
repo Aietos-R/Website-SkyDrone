@@ -1,0 +1,145 @@
+<%- include('../../layouts/dashboard-start', { 
+    title: 'Menu Management',
+    page: 'menu',
+    headerButtons: `
+        <a href="/admin/menu/create" class="btn btn-primary-custom">
+            <i class="fas fa-plus me-2"></i> Add New Menu
+        </a>
+    `
+}) %>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card card-custom stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Total Menu</h5>
+                <h2 class="text-primary"><%= menus.length %></h2>
+                <p class="text-muted mb-0">Items available</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-custom stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Best Seller</h5>
+                <h4>Ayam Geprek Mozarella</h4>
+                <p class="text-muted mb-0">128 sold this week</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-custom stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Revenue</h5>
+                <h2 class="text-success">Rp 3.8M</h2>
+                <p class="text-muted mb-0">This month</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search & Filter -->
+<div class="card card-custom mb-4">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search menu..." id="searchInput">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="ayam">Ayam</option>
+                    <option value="nasi">Nasi</option>
+                    <option value="minuman">Minuman</option>
+                    <option value="side_dish">Side Dish</option>
+                    <option value="paket">Paket</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-secondary w-100" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i> Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menu Table -->
+<div class="card card-custom table-custom">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Menu Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Spicy Level</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% menus.forEach((menu, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="<%= menu.image && menu.image !== 'default-menu.svg' ? '/uploads/' + menu.image : '/images/placeholders/menu.svg' %>" 
+                                     class="rounded me-3" 
+                                     width="50" 
+                                     height="50" 
+                                     style="object-fit: cover;">
+                                <div>
+                                    <h6 class="mb-0"><%= menu.name %></h6>
+                                    <small class="text-muted"><%= menu.description ? menu.description.substring(0, 50) + '...' : 'No description' %></small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge-category">
+                                <%= menu.category.toUpperCase() %>
+                            </span>
+                        </td>
+                        <td>Rp <%= menu.price.toLocaleString('id-ID') %></td>
+                        <td>
+                            <% for(let i=0; i<3; i++) { %>
+                                <i class="fas fa-pepper-hot <%= i < menu.spicy_level ? 'text-danger' : 'text-muted' %>"></i>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if(menu.is_available) { %>
+                                <span class="badge bg-success">Available</span>
+                            <% } else { %>
+                                <span class="badge bg-danger">Sold Out</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="/admin/menu/edit/<%= menu.id %>" 
+                                   class="btn btn-sm btn-outline-primary">
+                                   <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-danger" 
+                                        data-confirm-url="/admin/menu/delete/<%= menu.id %>"
+                                        data-confirm-message="Hapus menu <%= menu.name %>?">
+                                   <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<%- include('../../layouts/dashboard-end') %>

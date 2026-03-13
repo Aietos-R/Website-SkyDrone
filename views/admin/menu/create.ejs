@@ -1,0 +1,59 @@
+<%- include('../../layouts/dashboard-start', { 
+  title: 'Tambah Menu',
+  page: 'menu'
+}) %>
+
+<div class="card card-custom">
+  <div class="card-body">
+    <form action="/admin/menu" method="POST" enctype="multipart/form-data" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Nama Menu</label>
+        <input type="text" class="form-control" name="name" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Kategori</label>
+        <select name="category" class="form-select" required>
+          <option value="ayam">Ayam</option>
+          <option value="nasi">Nasi</option>
+          <option value="minuman">Minuman</option>
+          <option value="side_dish">Side Dish</option>
+          <option value="paket">Paket</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Harga</label>
+        <input type="number" class="form-control" name="price" required min="1000">
+      </div>
+      <div class="col-md-12">
+        <label class="form-label">Deskripsi</label>
+        <textarea class="form-control" rows="3" name="description" required></textarea>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Level Pedas (0-3)</label>
+        <input type="number" class="form-control" name="spicy_level" min="0" max="3" value="0">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Varian</label>
+        <input type="text" class="form-control" name="variant">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Status</label>
+        <div class="form-check form-switch mt-2">
+          <input class="form-check-input" type="checkbox" name="is_available" checked>
+          <label class="form-check-label">Tersedia</label>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Gambar Menu</label>
+        <input type="file" class="form-control" name="image" accept="image/*">
+      </div>
+      <div class="col-12 d-flex justify-content-end gap-2">
+        <a href="/admin/menu" class="btn btn-secondary">Batal</a>
+        <button type="button" class="btn btn-primary-custom" data-confirm-submit="true" data-confirm-message="Simpan menu baru?">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../../layouts/dashboard-end') %>
+

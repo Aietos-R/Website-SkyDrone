@@ -1,0 +1,164 @@
+==============================================
+DESKRIPSI FITUR APLIKASI HIGH-TECH KULINER
+==============================================
+
+Aplikasi web High-Tech Kuliner adalah sistem manajemen restoran ayam geprek yang dibangun dengan teknologi modern. Berikut adalah deskripsi lengkap fitur-fitur yang tersedia:
+
+1. AUTHENTICATION & AUTHORIZATION
+---------------------------------
+- Password hashing dengan bcryptjs
+- Session management dengan express-session dan MySQL store
+- Middleware auth untuk proteksi route berdasarkan role
+- Referensi: middleware/auth.js, controllers/AuthController.js
+
+2. DASHBOARD ADMIN
+------------------
+- Overview statistik: total menu, best seller, revenue
+- Menu management: CRUD menu dengan upload gambar
+- Online orders management: lihat dan update status pesanan
+- Reservations management: kelola reservasi meja
+- Transaction management: buat transaksi manual
+- Reporting: laporan penjualan dan statistik
+- Referensi: views/admin/dashboard.ejs, controllers/DashboardController.js
+
+3. CUSTOMER DASHBOARD
+---------------------
+- Menu browsing dengan filter dan search
+- Shopping cart dengan real-time update
+- Checkout process dengan validasi
+- Order history tracking
+- Reservation system untuk meja
+- Profile management
+- Referensi: views/customer/order.ejs, controllers/CustomerController.js
+
+4. MENU MANAGEMENT SYSTEM
+-------------------------
+- Kategori menu: ayam, nasi, minuman, side_dish, paket
+- Upload gambar menu dengan multer
+- Management ketersediaan menu (available/unavailable)
+- Harga dan deskripsi menu
+- Level kepedasan (0-3)
+- Variant menu
+- Referensi: controllers/MenuController.js, models/Menu.js
+
+5. SHOPPING CART & CHECKOUT
+---------------------------
+- Add to cart dengan quantity
+- Update quantity di cart
+- Remove item dari cart
+- Calculate total harga
+- Checkout dengan validasi form
+- Payment method selection
+- Referensi: views/customer/cart.ejs, public/js/customer-dashboard.js
+
+6. ONLINE ORDER SYSTEM
+----------------------
+- Real-time order tracking
+- Status order: pending, processing, completed, cancelled
+- Admin order management
+- Customer order history
+- Referensi: controllers/AdminOnlineOrderController.js, views/admin/online_orders/index.ejs
+
+7. RESERVATION SYSTEM
+---------------------
+- Booking meja dengan tanggal dan waktu
+- Capacity management
+- Reservation status tracking
+- Customer reservation history
+- Admin reservation management
+- Referensi: controllers/AdminReservationController.js, views/customer/reserve.ejs
+
+8. TRANSACTION SYSTEM
+---------------------
+- Manual transaction creation untuk admin
+- Invoice generation
+- Payment method: cash, qris, debit
+- Transaction details dengan subtotal calculation
+- Referensi: controllers/TransactionController.js, views/transactions/index.ejs
+
+9. REPORTING SYSTEM
+-------------------
+- Sales reports
+- Menu performance statistics
+- Revenue tracking
+- Best seller analysis
+- Referensi: controllers/ReportController.js, views/admin/report.ejs
+
+10. USER INTERFACE FEATURES
+---------------------------
+- Responsive design dengan Bootstrap 5
+- Font Awesome icons
+- Custom CSS dengan gradient dan animations
+- Dynamic filtering dan search
+- Loading states dan empty states
+- View toggle (grid/list)
+- Referensi: public/css/customer-dashboard.css, public/js/customer-dashboard.js
+
+11. DATABASE SCHEMA
+-------------------
+- Users: id, username, password, full_name, role, created_at
+- Menus: id, name, category, price, description, spicy_level, variant, image, is_available
+- Transactions: id, invoice, user_id, customer_name, total, payment_method, transaction_date
+- Transaction_details: id, transaction_id, menu_id, quantity, price, subtotal
+- Online_orders: auto-created melalui config/database.js
+- Sessions: untuk session storage
+- Referensi: databasewebayam.sql, config/database.js
+
+12. SECURITY FEATURES
+---------------------
+- Password hashing dengan bcryptjs
+- Session-based authentication
+- Role-based access control
+- Input validation dengan express-validator
+- File upload validation
+- SQL injection protection dengan parameterized queries
+- Referensi: middleware/validators.js, middleware/auth.js
+
+13. TECHNICAL STACK
+-------------------
+- Backend: Node.js, Express.js
+- Template Engine: EJS
+- Database: MySQL dengan mysql2
+- Session: express-session dengan MySQL store
+- File Upload: multer
+- Validation: express-validator
+- Utilities: moment, method-override, axios, connect-flash
+- Frontend: Bootstrap 5, Font Awesome, Custom CSS/JS
+
+14. FILE STRUCTURE
+------------------
+- config/: Database configuration
+- controllers/: Business logic controllers
+- middleware/: Authentication and validation middleware
+- models/: Data models
+- public/: Static assets (CSS, JS, images, uploads)
+- routes/: Route definitions
+- views/: EJS templates
+- tests/: Test scripts
+
+15. KEY CODE REFERENCES
+----------------------
+- Server entry: server.js:1-145
+- Session config: server.js:40-51
+- Database config: config/database.js:27-51
+- Auth middleware: middleware/auth.js:1-45
+- Customer layout: views/layouts/customer-start.ejs:37-62
+- Menu filtering: public/js/customer-dashboard.js:561-613
+- Cart management: views/customer/cart.ejs:1-39
+- Order processing: controllers/CustomerController.js:41 (layout render)
+
+==============================================
+FITUR UTAMA YANG DAPAT DIPRESENTASIKAN:
+==============================================
+1. Multi-role Authentication System
+2. Responsive Customer Ordering Interface
+3. Real-time Shopping Cart
+4. Admin Dashboard dengan Analytics
+5. Menu Management dengan Image Upload
+6. Online Order Tracking System
+7. Table Reservation System
+8. Comprehensive Reporting
+9. Secure Payment Processing
+10. Mobile-friendly Design
+
+Total Lines Code: ~5000+ lines across 40+ files

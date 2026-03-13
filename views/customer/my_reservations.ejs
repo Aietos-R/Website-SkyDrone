@@ -1,0 +1,76 @@
+<%- include('../layouts/customer-start', { title: 'Reservasi Saya', page: 'reservations', user: user, cartCount: cartCount }) %>
+
+<div class="container">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card card-custom">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><i class="fas fa-chair me-2"></i>Riwayat Reservasi</h5>
+          <span class="badge bg-primary"><%= reservations.length %> reservasi</span>
+        </div>
+        <div class="card-body">
+          <% if (!reservations || reservations.length === 0) { %>
+            <div class="text-center py-5">
+              <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+              <h5 class="text-muted">Belum ada reservasi</h5>
+              <p class="text-muted">Reservasi Anda akan muncul di sini setelah dikirim</p>
+              <a href="/customer/reserve" class="btn btn-primary"><i class="fas fa-chair me-2"></i>Buat Reservasi</a>
+            </div>
+          <% } else { %>
+            <% reservations.forEach(function(r){ %>
+              <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                      <strong class="text-primary"><i class="fas fa-calendar me-1"></i><%= r.date %> <%= r.time %></strong><br>
+                      <small class="text-muted"><i class="fas fa-users me-1"></i><%= r.party_size %> orang</small>
+                    </div>
+                    <div class="text-end">
+                      <% var badgeClass = 'bg-secondary'; if (r.status === 'pending') { badgeClass = 'bg-warning text-dark'; } else if (r.status === 'approved') { badgeClass = 'bg-success'; } else if (r.status === 'rejected') { badgeClass = 'bg-danger'; } %>
+                      <span class="badge <%= badgeClass %>">Status: <%= r.status_label %></span><br>
+                      <small class="text-muted"><i class="fas fa-clock me-1"></i><%= moment(r.created_at).format('DD/MM/YY HH:mm') %></small>
+                    </div>
+                  </div>
+
+                  <!-- Timeline -->
+                  <div class="timeline mb-3" data-status="<%= r.status %>">
+                    <div class="d-flex flex-wrap gap-3 align-items-center">
+                      <% var reached = true; r.timeline.forEach(function(step){ var active = reached; if (step.key === r.status) { reached = false; } %>
+                        <div class="d-flex align-items-center">
+                          <div class="step-circle <%= active ? 'bg-success text-white' : 'bg-light text-muted' %>"><i class="fas fa-<%= step.icon %>"></i></div>
+                          <div class="ms-2"><div class="small <%= active ? 'fw-semibold' : 'text-muted' %>"><%= step.label %></div></div>
+                        </div>
+                        <div class="step-line <%= reached ? 'bg-secondary' : 'bg-light' %>"></div>
+                      <% }) %>
+                    </div>
+                  </div>
+
+                  <% if (r.reason) { %>
+                    <div class="alert <%= r.status === 'rejected' ? 'alert-danger' : 'alert-info' %> d-flex align-items-center">
+                      <i class="fas <%= r.status === 'rejected' ? 'fa-exclamation-triangle' : 'fa-info-circle' %> me-2"></i>
+                      <div>
+                        <strong><%= r.status === 'rejected' ? 'Alasan penolakan' : 'Catatan' %>:</strong> <%= r.reason %>
+                      </div>
+                    </div>
+                  <% } else if (r.status === 'pending') { %>
+                    <div class="alert alert-warning d-flex align-items-center">
+                      <i class="fas fa-hourglass-half me-2"></i>
+                      <div>Reservasi Anda sedang menunggu persetujuan admin.</div>
+                    </div>
+                  <% } %>
+                </div>
+              </div>
+            <% }) %>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .timeline .step-circle { width: 34px; height: 34px; border-radius: 50%; display:flex; align-items:center; justify-content:center; }
+  .timeline .step-line { width: 40px; height: 3px; border-radius: 2px; margin: 0 8px; }
+</style>
+
+<%- include('../layouts/customer-end') %>

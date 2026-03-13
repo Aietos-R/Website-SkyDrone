@@ -1,0 +1,61 @@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="customer-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="footer-section">
+                        <h5><i class="fas fa-fire me-2"></i>SkyDrone</h5>
+                        <p>Pengiriman express #1 Mudah, Cepat dan Aman. Dengan harga yang Terjangkau !</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer-section">
+                        <h6>Jam Operasional</h6>
+                        <ul class="footer-list">
+                            <li><i class="fas fa-clock me-2"></i>24 Jam</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer-section">
+                        <h6>Hubungi Kami</h6>
+                        <ul class="footer-list">
+                            <li><i class="fas fa-phone me-2"></i>0812-3456-7890</li>
+                            <li><i class="fas fa-map-marker-alt me-2"></i>Jl. Merdeka No. 123, Kota Arema</li>
+                            <li><i class="fas fa-envelope me-2"></i>info@SkyDrone.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="text-center">
+                <p class="mb-0">&copy; <%= new Date().getFullYear() %> PT. El Cepat Abadi</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        document.querySelectorAll('.toast').forEach(function(el){
+          try { new bootstrap.Toast(el, { delay: 4000 }).show(); } catch(e) {}
+        });
+      });
+    </script>
+    
+    <!-- Custom JS -->
+    <script src="/js/confirmations.js"></script>
+    <script src="/js/customer-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<%- include('../layouts/customer-start', { 
+  title: 'Daftar Restoran',
+  page: 'restaurant', 
+  user: user,
+  cartCount: typeof cartCount !== 'undefined' ? cartCount : 0
+}) %>
+
+<div class="hero-section position-relative overflow-hidden" style="padding: 4rem 0 6rem; border-radius: 0 0 3rem 3rem;">
+    <div class="position-absolute rounded-circle" style="width: 250px; height: 250px; background: rgba(255,255,255,0.05); top: -50px; left: -50px;"></div>
+    
+    <div class="container text-center position-relative z-2">
+        <h1 class="display-5 fw-bold mb-3 text-white">
+            Pilih Restoran Favoritmu 🛵
+        </h1>
+        <p class="lead text-white-50 mb-4">
+            Jelajahi berbagai pilihan kuliner terbaik di setiap daerah.
+        </p>
+
+        <div class="bg-white rounded-pill p-2 shadow-lg d-flex align-items-center position-relative z-3" style="max-width: 600px; margin: 0 auto;">
+            <i class="fas fa-search text-muted ms-3 me-2"></i>
+            <input type="text" id="searchResto" class="form-control border-0 shadow-none bg-transparent" placeholder="Cari nama restoran (misal: McD, Geprek)..." style="font-size: 1rem;">
+            <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Cari</button>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5 mb-5" style="min-height: 50vh;">
+
+    <div id="no-result-msg" class="text-center py-5" style="display: none;">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h4 class="text-muted fw-bold">Restoran tidak ditemukan</h4>
+        <p class="text-muted">Coba kata kunci lain untuk mencari restoran kesukaanmu.</p>
+    </div>
+
+    <div class="region-section mb-5">
+        <div class="d-flex align-items-center mb-4 border-bottom pb-2">
+            <i class="fas fa-map-marker-alt fa-2x text-danger me-3"></i>
+            <h3 class="fw-bold text-dark mb-0">Jakarta Selatan</h3>
+        </div>
+        
+        <div class="row g-4 resto-container">
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="McDonald's">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.9</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">McDonald's</h6>
+                            <small class="text-muted resto-tags">Cepat Saji, Burger, Ayam</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="KFC">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.8</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">KFC Sudirman</h6>
+                            <small class="text-muted resto-tags">Ayam Goreng</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Sate Khas">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.7</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">Sate Khas Senayan</h6>
+                            <small class="text-muted resto-tags">Sate, Tradisional</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/arema" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Ayam Geprek">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.9</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">Ayam Geprek Arema</h6>
+                            <small class="text-muted resto-tags">Pedas, Nasi</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="region-section mb-5">
+        <div class="d-flex align-items-center mb-4 border-bottom pb-2">
+            <i class="fas fa-map-marker-alt fa-2x text-primary me-3"></i>
+            <h3 class="fw-bold text-dark mb-0">Jakarta Pusat</h3>
+        </div>
+        
+        <div class="row g-4 resto-container">
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <div class="position-absolute top-0 start-0 p-2 z-3">
+                                <span class="badge bg-danger"><i class="fas fa-fire me-1"></i>Promo</span>
+                            </div>
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Padang">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.8</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">Nasi Padang Garuda</h6>
+                            <small class="text-muted resto-tags">Tradisional, Nasi</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Bakmi GM">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.9</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">Bakmi GM</h6>
+                            <small class="text-muted resto-tags">Mie, Asian</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Solaria">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.5</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">Solaria</h6>
+                            <small class="text-muted resto-tags">Keluarga, Nasi</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Burger King">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.6</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">Burger King</h6>
+                            <small class="text-muted resto-tags">Burger, Cepat Saji</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="region-section mb-5">
+        <div class="d-flex align-items-center mb-4 border-bottom pb-2">
+            <i class="fas fa-map-marker-alt fa-2x text-success me-3"></i>
+            <h3 class="fw-bold text-dark mb-0">Jakarta Barat</h3>
+        </div>
+        
+        <div class="row g-4 resto-container">
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <div class="position-absolute top-0 start-0 p-2 z-3">
+                                <span class="badge bg-success"><i class="fas fa-star me-1"></i>Baru</span>
+                            </div>
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Sushi Tei">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.9</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">Sushi Tei</h6>
+                            <small class="text-muted resto-tags">Jepang, Sushi</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Pizza Hut">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.8</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">Pizza Hut</h6>
+                            <small class="text-muted resto-tags">Pizza, Italia</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="HokBen">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.7</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">HokBen</h6>
+                            <small class="text-muted resto-tags">Jepang, Cepat Saji</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3 resto-card">
+                <a href="/customer/restaurant/mcd" class="text-decoration-none">
+                    <div class="card card-custom h-100 border-0 shadow-sm hover-lift">
+                        <div class="menu-image-container" style="height: 180px;">
+                            <img src="/images/placeholders/menu.svg" class="menu-image w-100 h-100" style="object-fit: cover;" alt="Kopi Kenangan">
+                            <div class="position-absolute top-0 end-0 p-2 z-3">
+                                <span class="badge bg-warning text-dark shadow-sm"><i class="fas fa-star me-1"></i>4.8</span>
+                            </div>
+                        </div>
+                        <div class="card-body bg-white text-center p-3">
+                            <h6 class="fw-bold text-dark mb-1 resto-name">Kopi Kenangan</h6>
+                            <small class="text-muted resto-tags">Minuman, Kopi</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchResto');
+    const regionSections = document.querySelectorAll('.region-section');
+    const noResultMsg = document.getElementById('no-result-msg');
+
+    searchInput.addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        let totalVisibleCards = 0;
+
+        // Cek setiap wilayah (Jakarta Selatan, Pusat, Barat)
+        regionSections.forEach(section => {
+            const cards = section.querySelectorAll('.resto-card');
+            let visibleCardsInRegion = 0;
+
+            // Cek setiap kartu resto di wilayah tersebut
+            cards.forEach(card => {
+                const name = card.querySelector('.resto-name').textContent.toLowerCase();
+                const tags = card.querySelector('.resto-tags').textContent.toLowerCase();
+
+                if (name.includes(filter) || tags.includes(filter)) {
+                    card.style.display = '';
+                    visibleCardsInRegion++;
+                    totalVisibleCards++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (visibleCardsInRegion === 0) {
+                section.style.display = 'none';
+            } else {
+                section.style.display = '';
+            }
+        });
+
+        if (totalVisibleCards === 0) {
+            noResultMsg.style.display = 'block';
+        } else {
+            noResultMsg.style.display = 'none';
+        }
+    });
+});
+</script>
+
+<%- include('../layouts/customer-end') %>

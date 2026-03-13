@@ -1,0 +1,38 @@
+Judul: Dependensi yang harus diinstal untuk proyek High-Tech Kuliner
+
+Perangkat lunak sistem:
+- Node.js (disarankan v18 atau lebih baru)
+- MySQL Server (disarankan v8 atau lebih baru)
+
+Dependensi npm (akan terpasang dengan menjalankan `npm install`):
+- axios
+- bcryptjs
+- connect-flash
+- dotenv
+- ejs
+- express
+- express-mysql-session
+- express-session
+- express-validator
+- method-override
+- moment
+- multer
+- mysql2
+
+Dependensi pengembangan (opsional):
+- nodemon
+
+
+Warna Website
+Utama :
+- Deep violet runs darker #330066.
+- Royal purple #7851A9
+
+- violet #EE82EE
+- plum #DDA0DD
+
+- standard purple #800080
+- Magenta #FF00FF
+- lilac #C8A2C8
+- mauve #E0B0FF
+- lavender #E6E6FA
