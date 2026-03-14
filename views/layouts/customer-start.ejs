@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/customer-dashboard.css">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="/customer/beranda">
@@ -20,93 +20,88 @@
                 </div>
             </a>
             
-            <div class="d-flex align-items-center d-lg-none ms-auto me-3">
-                <i class="fas fa-user-circle text-secondary me-2"></i>
-                <span class="fw-medium text-dark"><%= user ? user.full_name : 'User' %></span>
+            <div class="d-flex align-items-center ms-auto">
+                
+                <div class="nav-item dropdown me-2 me-lg-0">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="user-avatar me-lg-2">
+                            <i class="fas fa-user-circle" style="font-size: 1.8rem;"></i>
+                        </div>
+                        <div class="user-info d-none d-lg-block">
+                            <div class="user-name"><%= user ? user.full_name : 'User' %></div>
+                            <small class="user-role text-muted"><%= user ? ({customer:'Pelanggan', student:'Mahasiswa', admin:'Admin', lecturer:'Dosen'})[user.role] || user.role : '' %></small>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-custom position-absolute" aria-labelledby="navbarDropdown">
+                        <li>
+                            <div class="dropdown-header">
+                                <div class="d-flex align-items-center">
+                                    <div class="user-avatar-lg me-3">
+                                        <i class="fas fa-user-circle fa-2x text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0"><%= user ? user.full_name : '' %></h6>
+                                        <small class="text-muted"><%= user ? user.username : '' %></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/customer/profile"><i class="fas fa-user me-2"></i>Profil Saya</a></li>
+                        <li><a class="dropdown-item" href="/customer/orders"><i class="fas fa-history me-2"></i>Riwayat Pesanan</a></li>
+                        <li><a class="dropdown-item" href="/customer/reservations"><i class="fas fa-chair me-2"></i>Riwayat Reservasi</a></li>
+                        <li><a class="dropdown-item" href="/customer/settings"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form action="/logout" method="POST" class="d-inline w-100">
+                                <button type="submit" class="dropdown-item text-danger w-100">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Keluar
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+
+                <button class="navbar-toggler border-0 shadow-none px-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
             </div>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto mt-3 mt-lg-0">
                     <li class="nav-item">
                         <a class="nav-link <%= page === 'beranda' || page === 'home' ? 'active' : '' %>" href="/customer/beranda">
-                            <i class="fas fa-home me-1"></i>
-                            Beranda
+                            <i class="fas fa-home me-1"></i> Beranda
                         </a>
                     </li>
                     
                     <li class="nav-item">
                         <a class="nav-link <%= page === 'restaurant' ? 'active' : '' %>" href="/customer/restaurant">
-                            <i class="fas fa-store me-1"></i>
-                            Restoran
+                            <i class="fas fa-store me-1"></i> Restoran
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <%= page === 'cart' ? 'active' : '' %>" href="/customer/cart">
-                            <i class="fas fa-shopping-cart me-1"></i>
-                            Keranjang
-                            <span class="badge bg-danger ms-1" style="display: <%= cartCount && cartCount > 0 ? 'inline-block' : 'none' %>"><%= cartCount || 0 %></span>
+                            <i class="fas fa-shopping-cart me-1"></i> Keranjang
+                            <span class="badge bg-danger ms-1" style="display: <%= cartCount && cartCount > 0 ? 'inline-block' : 'none' %>;"><%= cartCount || 0 %></span>
                         </a>
                     </li>
 
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link <%= page === 'orders' ? 'active' : '' %>" href="/customer/orders">
-                            <i class="fas fa-list me-1"></i>
-                            Pesanan Saya
+                            <i class="fas fa-list me-1"></i> Pesanan Saya
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link <%= page === 'reservations' ? 'active' : '' %>" href="/customer/reservations">
-                            <i class="fas fa-chair me-1"></i>
-                            Reservasi Saya
+                            <i class="fas fa-chair me-1"></i> Reservasi Saya
                         </a>
-                    </li>
-
-                    <li class="nav-item dropdown ms-lg-2">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="user-avatar me-2">
-                                <i class="fas fa-user-circle"></i>
-                            </div>
-                            <div class="user-info d-none d-lg-block">
-                                <div class="user-name"><%= user ? user.full_name : 'User' %></div>
-                                <small class="user-role text-muted"><%= user ? ({customer:'Pelanggan', student:'Mahasiswa', admin:'Admin', lecturer:'Dosen'})[user.role] || user.role : '' %></small>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-custom" aria-labelledby="navbarDropdown">
-                            <li>
-                                <div class="dropdown-header">
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-avatar-lg me-3">
-                                            <i class="fas fa-user-circle fa-2x text-primary"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-0"><%= user ? user.full_name : '' %></h6>
-                                            <small class="text-muted"><%= user ? user.username : '' %></small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/customer/profile"><i class="fas fa-user me-2"></i>Profil Saya</a></li>
-                            <li><a class="dropdown-item" href="/customer/orders"><i class="fas fa-history me-2"></i>Riwayat Pesanan</a></li>
-                            <li><a class="dropdown-item" href="/customer/reservations"><i class="fas fa-chair me-2"></i>Riwayat Reservasi</a></li>
-                            <li><a class="dropdown-item" href="/customer/settings"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form action="/logout" method="POST" class="d-inline w-100">
-                                    <button type="submit" class="dropdown-item text-danger w-100">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Keluar
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                    </li> -->
+                    
+                    </ul>
             </div>
         </div>
     </nav>
@@ -161,8 +156,31 @@
             </div>
         </div>
     </div> -->
-
-    <div class="main-content">
+    
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+        <% if (typeof success_msg !== 'undefined' && success_msg && success_msg.length > 0) { %>
+            <% (Array.isArray(success_msg) ? success_msg : [success_msg]).forEach(function(msg) { %>
+                <div class="toast align-items-center text-bg-success border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body fw-bold"><i class="fas fa-check-circle me-2"></i><%= msg %></div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+        
+        <% if (typeof error_msg !== 'undefined' && error_msg && error_msg.length > 0) { %>
+            <% (Array.isArray(error_msg) ? error_msg : [error_msg]).forEach(function(msg) { %>
+                <div class="toast align-items-center text-bg-danger border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body fw-bold"><i class="fas fa-exclamation-circle me-2"></i><%= msg %></div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+    <div class="main-content flex-grow-1">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">

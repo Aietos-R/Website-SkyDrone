@@ -1,0 +1,269 @@
+<%- include('../layouts/customer-start', { 
+  title: 'Kirim Paket',
+  page: 'send',
+  user: user,
+  cartCount: typeof cartCount !== 'undefined' ? cartCount : 0
+}) %>
+
+<div class="hero-section position-relative overflow-hidden" style="padding: 4rem 0 8rem; border-radius: 0 0 3rem 3rem;">
+    <div class="position-absolute rounded-circle" style="width: 250px; height: 250px; background: rgba(255,255,255,0.05); top: -50px; right: -50px;"></div>
+    
+    <div class="container text-center position-relative z-2">
+        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm mb-3 fw-bold border-0">
+            <i class="fas fa-helicopter text-warning me-1"></i> PT. El Cepat Abadi
+        </span>
+        <h1 class="display-5 fw-bold mb-3 text-white">
+            Kirim Paket via SkyDrone 📦
+        </h1>
+        <p class="lead text-white-50 mb-4 mx-auto" style="max-width: 600px;">
+            Layanan pengiriman udara super cepat. Pilih kirim langsung ke alamat, atau ambil di Setpoint Loker pintar kami!
+        </p>
+    </div>
+</div>
+
+<div class="container mb-5" style="margin-top: -4rem; position: relative; z-index: 10;">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            
+            <div class="card card-custom border-0 shadow-lg">
+                <div class="card-body p-4 p-md-5">
+                    
+                    <ul class="nav nav-pills nav-fill mb-5 bg-light p-2 rounded-pill shadow-sm" id="deliveryTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active rounded-pill fw-bold py-3" id="direct-tab" data-bs-toggle="pill" data-bs-target="#direct-delivery" type="button" role="tab" aria-selected="true">
+                                <i class="fas fa-motorcycle me-2"></i>Kirim ke Alamat
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill fw-bold py-3" id="setpoint-tab" data-bs-toggle="pill" data-bs-target="#setpoint-delivery" type="button" role="tab" aria-selected="false">
+                                <i class="fas fa-box-open me-2"></i>Ambil di Setpoint
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="deliveryTabContent">
+                        
+                        <div class="tab-pane fade show active" id="direct-delivery" role="tabpanel" aria-labelledby="direct-tab">
+                            <form action="/customer/send/direct" method="POST">
+                                <h5 class="fw-bold text-dark border-bottom pb-2 mb-4"><i class="fas fa-map-marker-alt text-danger me-2"></i>Info Tujuan (Alamat Langsung)</h5>
+                                
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">Nama Penerima</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-0"><i class="fas fa-user text-muted"></i></span>
+                                            <input type="text" name="receiver_name" class="form-control bg-light border-0" placeholder="Contoh: Budi Santoso" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">No. HP Penerima</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-0"><i class="fas fa-phone text-muted"></i></span>
+                                            <input type="text" name="receiver_phone" class="form-control bg-light border-0" placeholder="0812xxxxxx" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label text-muted small fw-bold">Alamat Lengkap Tujuan</label>
+                                        <textarea name="receiver_address" class="form-control bg-light border-0" rows="3" placeholder="Jalan, RT/RW, Patokan gedung..." required></textarea>
+                                    </div>
+                                </div>
+
+                                <h5 class="fw-bold text-dark border-bottom pb-2 mb-4"><i class="fas fa-box text-primary me-2"></i>Detail Paket</h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">Kategori Barang</label>
+                                        <select name="item_category" class="form-select bg-light border-0" required>
+                                            <option value="">Pilih Kategori...</option>
+                                            <option value="dokumen">Dokumen</option>
+                                            <option value="makanan">Makanan/Minuman</option>
+                                            <option value="elektronik">Elektronik Kecil</option>
+                                            <option value="pakaian">Pakaian</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">Estimasi Berat (Kg)</label>
+                                        <div class="input-group">
+                                            <input type="number" name="item_weight" class="form-control bg-light border-0" min="1" max="5" placeholder="Maks. 5 Kg (Kapasitas Drone)" required>
+                                            <span class="input-group-text bg-light border-0">Kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm hover-lift fw-bold" onclick="if(this.form.checkValidity()){ HTMLFormElement.prototype.submit.call(this.form); } else { this.form.reportValidity(); }">
+                                    <i class="fas fa-paper-plane me-2"></i>Kirim Sekarang
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="setpoint-delivery" role="tabpanel" aria-labelledby="setpoint-tab">
+                            <form id="formSetpoint" action="/customer/send/setpoint" method="POST">
+                                
+                                <div class="alert alert-info border-0 shadow-sm rounded-4 mb-4 d-flex align-items-center">
+                                    <i class="fas fa-info-circle fa-2x me-3 text-info"></i>
+                                    <div>
+                                        <strong>Layanan Loker Pintar!</strong> Paket akan diletakkan di dalam Loker otomatis. Penerima dapat mengambil kapan saja menggunakan kode PIN unik.
+                                    </div>
+                                </div>
+
+                                <h5 class="fw-bold text-dark border-bottom pb-2 mb-4"><i class="fas fa-building text-success me-2"></i>Pilih Lokasi Setpoint</h5>
+                                
+                                <div class="row g-3 mb-4">
+                                    <div class="col-12">
+                                        <label class="form-label text-muted small fw-bold">Pilih Loker Terdekat dengan Penerima</label>
+                                        <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border">
+                                            <span class="input-group-text bg-white border-0"><i class="fas fa-map-marker-alt text-danger"></i></span>
+                                            <select name="setpoint_location" class="form-select bg-white border-0 shadow-none" required>
+                                                <option value="">-- Pilih Lokasi SkyDrone Setpoint --</option>
+                                                <option value="SP-KEMANG">Loker SkyDrone - Kemang Village, Jakarta Selatan</option>
+                                                <option value="SP-BLOKM">Loker SkyDrone - Blok M Plaza, Jakarta Selatan</option>
+                                                <option value="SP-SUDIRMAN">Loker SkyDrone - Stasiun Sudirman, Jakarta Selatan</option>
+                                                <option value="SP-TEBET">Loker SkyDrone - Stasiun Tebet, Jakarta Selatan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">Nama Penerima</label>
+                                        <input type="text" name="receiver_name" class="form-control bg-light border-0" placeholder="Budi Santoso" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">No. WhatsApp Penerima (Untuk kirim PIN)</label>
+                                        <input type="text" name="receiver_phone" class="form-control bg-light border-0" placeholder="0812xxxxxx" required>
+                                    </div>
+                                </div>
+
+                                <h5 class="fw-bold text-dark border-bottom pb-2 mb-4"><i class="fas fa-box text-primary me-2"></i>Detail Paket</h5>
+                                <div class="row g-3 mb-5">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">Kategori Barang</label>
+                                        <select name="item_category" class="form-select bg-light border-0" required>
+                                            <option value="">Pilih Kategori...</option>
+                                            <option value="dokumen">Dokumen Rahasia</option>
+                                            <option value="makanan">Makanan</option>
+                                            <option value="barang">Barang Kecil</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold">Estimasi Berat (Kg)</label>
+                                        <input type="number" name="item_weight" class="form-control bg-light border-0" min="1" max="5" placeholder="Maks. 5 Kg" required>
+                                    </div>
+                                </div>
+
+                                <button type="button" id="btnProsesSetpoint" class="btn btn-success btn-lg w-100 rounded-pill shadow-sm hover-lift fw-bold">
+                                    <i class="fas fa-lock me-2"></i>Proses & Generate PIN Loker
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="tokenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="modal-header bg-gradient-primary text-white border-0 text-center d-block p-4">
+                <div class="icon-circle mx-auto mb-3" style="width: 90px; height: 90px;">
+                    <i class="fas fa-check text-success fa-2x"></i>
+                </div>
+                <h4 class="modal-title fw-bold mb-0">Pesanan Diproses!</h4>
+            </div>
+            <div class="modal-body p-4 text-center bg-light">
+                <p class="text-muted mb-4">Drone akan segera menjemput paket Anda dan mengantarkannya ke <strong id="displayLocation" class="text-dark">Loker Tujuan</strong>.</p>
+                
+                <div class="card border-0 shadow-sm rounded-4 mb-4" style="background-color: #f8f9fa; border: 2px dashed var(--primary-color) !important;">
+                    <div class="card-body p-4">
+                        <small class="text-uppercase fw-bold text-muted d-block mb-2">Berikan Token PIN ini kepada Penerima:</small>
+                        <h1 class="display-3 fw-bold text-primary tracking-widest mb-0" style="letter-spacing: 5px;" id="tokenDisplay">
+                            --- ---
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning mb-0 text-start small">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Penerima wajib memasukkan PIN ini di layar Loker Setpoint untuk membuka pintu secara otomatis.
+                </div>
+            </div>
+            <div class="modal-footer border-0 p-4 bg-light d-flex justify-content-center">
+                <a href="/customer/orders" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow-sm">Lihat Pesanan Saya</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const formSetpoint = document.getElementById('formSetpoint');
+    const btnProses = document.getElementById('btnProsesSetpoint');
+    const tokenModal = new bootstrap.Modal(document.getElementById('tokenModal'));
+    
+    if(btnProses && formSetpoint) {
+        btnProses.addEventListener('click', async function(e) {
+            
+            // Cek apakah semua input (nama, nomor, dll) sudah diisi
+            if (!formSetpoint.checkValidity()) {
+                formSetpoint.reportValidity(); // Munculkan peringatan "Wajib diisi"
+                return; // Hentikan proses jika ada yang kosong
+            }
+
+            // 1. Ambil nama lokasi untuk ditampilkan di pop-up
+            const selectBox = formSetpoint.querySelector('select[name="setpoint_location"]');
+            const lokasiNama = selectBox.options[selectBox.selectedIndex].text;
+            document.getElementById('displayLocation').textContent = lokasiNama;
+
+            // 2. Generate 6 Digit PIN Random
+            const pin1 = Math.floor(100 + Math.random() * 900); 
+            const pin2 = Math.floor(100 + Math.random() * 900); 
+            const fullPin = `${pin1}${pin2}`; 
+            document.getElementById('tokenDisplay').textContent = `${pin1} ${pin2}`;
+
+            // 3. Ubah tombol jadi loading
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menerbangkan Drone...';
+            this.disabled = true;
+
+            // 4. Susun data dari form untuk dikirim
+            const formData = new FormData(formSetpoint);
+            const dataToSave = new URLSearchParams();
+            for (const pair of formData) {
+                dataToSave.append(pair[0], pair[1]);
+            }
+            dataToSave.append('pickup_pin', fullPin); 
+
+            try {
+                // 5. Tembak data ke database Node.js
+                const response = await fetch('/customer/send/setpoint', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: dataToSave.toString()
+                });
+                
+                const result = await response.json();
+                
+                if(result.success) {
+                    // Munculkan Modal PIN Loker
+                    tokenModal.show();
+                    formSetpoint.reset(); 
+                } else {
+                    alert('Gagal mengirim pesanan. Silakan coba lagi.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan koneksi.');
+            } finally {
+                // Kembalikan tombol seperti semula
+                this.innerHTML = originalText;
+                this.disabled = false;
+            }
+        });
+    }
+});
+</script>
+
+<%- include('../layouts/customer-end') %>

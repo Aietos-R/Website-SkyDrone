@@ -92,6 +92,67 @@
         </div>
       </div>
     </div>
+
+    <div class="card card-custom mt-4">
+        <div class="card-header d-flex justify-content-between align-items-center bg-gradient-info text-white" style="background: linear-gradient(135deg, #0dcaf0 0%, #087990 100%);">
+          <h5 class="mb-0 text-white"><i class="fas fa-helicopter me-2"></i>Riwayat Pengiriman Drone</h5>
+          <span class="badge bg-light text-dark"><%= typeof deliveries !== 'undefined' ? deliveries.length : 0 %> pengiriman</span>
+        </div>
+        <div class="card-body">
+          <% if (!deliveries || deliveries.length === 0) { %>
+            <div class="text-center py-5">
+              <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+              <h5 class="text-muted">Belum ada pengiriman</h5>
+              <p class="text-muted">Riwayat paket drone Anda akan muncul di sini.</p>
+              <a href="/customer/send" class="btn btn-info text-white"><i class="fas fa-paper-plane me-2"></i>Kirim Paket</a>
+            </div>
+          <% } else { %>
+            <% deliveries.forEach(function(delivery){ %>
+              <div class="card mb-3 shadow-sm" style="border-left: 4px solid #0dcaf0;">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                      <strong class="text-info">Resi: DRX-<%= delivery.id %></strong><br>
+                      <small class="text-muted"><i class="fas fa-clock me-1"></i><%= moment(delivery.created_at).format('DD/MM/YY HH:mm') %></small>
+                    </div>
+                    <div class="text-end">
+                      <% var bClass = 'bg-secondary'; if (delivery.status === 'pending') { bClass = 'bg-warning'; } else if (delivery.status === 'completed') { bClass = 'bg-success'; } %>
+                      <span class="badge <%= bClass %>">Status: <%= delivery.status.toUpperCase() %></span><br>
+                      <strong><%= delivery.delivery_type === 'setpoint' ? 'Loker (Setpoint)' : 'Alamat Langsung' %></strong>
+                    </div>
+                  </div>
+
+                  <div class="bg-light p-3 rounded">
+                    <div class="row">
+                      <div class="col-md-6 mb-2 mb-md-0">
+                        <small class="text-muted d-block fw-bold">Penerima:</small>
+                        <span><%= delivery.receiver_name %> (<%= delivery.receiver_phone %>)</span>
+                      </div>
+                      <div class="col-md-6">
+                        <small class="text-muted d-block fw-bold">Tujuan / Loker:</small>
+                        <span><%= delivery.delivery_type === 'setpoint' ? delivery.setpoint_location : delivery.receiver_address %></span>
+                      </div>
+                    </div>
+                    <hr class="my-2">
+                    <div class="row align-items-center">
+                      <div class="col-md-6">
+                        <small class="text-muted d-block fw-bold">Paket:</small>
+                        <span class="text-capitalize"><%= delivery.item_category %> (<%= delivery.item_weight %> Kg)</span>
+                      </div>
+                      <% if (delivery.delivery_type === 'setpoint' && delivery.pickup_pin) { %>
+                      <div class="col-md-6 text-md-end mt-2 mt-md-0">
+                        <span class="badge bg-danger p-2 fs-6 shadow-sm"><i class="fas fa-lock me-1"></i> PIN Loker: <%= delivery.pickup_pin %></span>
+                      </div>
+                      <% } %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          <% } %>
+        </div>
+      </div>
+
   </div>
 </div>
 

@@ -28,6 +28,64 @@ const CustomerController = {
       res.redirect('/login');
     }
   },
+
+  //Pengiriman
+  async renderSend(req, res) {
+    try {
+      const cart = Array.isArray(req.session.cart) ? req.session.cart : [];
+      const cartCount = cart.reduce((sum, it) => sum + (Number(it.quantity) || 0), 0);
+
+      res.render('customer/send', {
+        title: 'Kirim Paket',
+        page: 'send',
+        user: req.session.user,
+        cartCount: cartCount
+      });
+    } catch (error) {
+      console.error('Error rendering send page:', error);
+      res.redirect('/customer/beranda');
+    }
+  },
+
+  // Fungsi Simpan Pengiriman Langsung (Alamat)
+  async submitSendDirect(req, res) {
+    try {
+      const { receiver_name, receiver_phone, receiver_address, item_category, item_weight } = req.body;
+      const userId = req.session.user.id;
+
+      await pool.query(
+        `INSERT INTO drone_deliveries (user_id, delivery_type, receiver_name, receiver_phone, receiver_address, item_category, item_weight) 
+         VALUES (?, 'direct', ?, ?, ?, ?, ?)`,
+        [userId, receiver_name, receiver_phone, receiver_address, item_category, item_weight]
+      );
+
+      req.flash('success_msg', 'Pengiriman diproses! Drone sedang menuju lokasi Anda.');
+      res.redirect('/customer/orders'); // Arahkan ke halaman pesanan saya
+    } catch (error) {
+      console.error('Error send direct:', error);
+      req.flash('error_msg', 'Gagal memproses pengiriman.');
+      res.redirect('/customer/send');
+    }
+  },
+
+  // Fungsi Simpan Pengiriman Loker Pintar (AJAX)
+  async submitSendSetpoint(req, res) {
+    try {
+      const { setpoint_location, receiver_name, receiver_phone, item_category, item_weight, pickup_pin } = req.body;
+      const userId = req.session.user.id;
+
+      await pool.query(
+        `INSERT INTO drone_deliveries (user_id, delivery_type, receiver_name, receiver_phone, setpoint_location, item_category, item_weight, pickup_pin) 
+         VALUES (?, 'setpoint', ?, ?, ?, ?, ?, ?)`,
+        [userId, receiver_name, receiver_phone, setpoint_location, item_category, item_weight, pickup_pin]
+      );
+
+      res.json({ success: true, message: 'Data berhasil disimpan' });
+    } catch (error) {
+      console.error('Error send setpoint:', error);
+      res.status(500).json({ success: false, message: 'Gagal memproses data pengiriman' });
+    }
+  },
   
   async renderMcd(req, res) {
     try {
@@ -152,11 +210,11 @@ const CustomerController = {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       ) ENGINE=InnoDB;
     `);
-    const [[dbUser]] = await pool.query('SELECT id, username, full_name, role, created_at FROM users WHERE id = ?', [req.session.user.id]);
+    const [[dbUser]] = await pool.query('SELECT id, username, full_name, role, created_at, nomor_whatsapp FROM users WHERE id = ?', [req.session.user.id]);
     const [[settings]] = await pool.query('SELECT * FROM user_settings WHERE user_id = ?', [req.session.user.id]);
     res.render('customer/profile', {
       title: 'Profil Saya',
-      user: { ...req.session.user, created_at: dbUser ? dbUser.created_at : null },
+      user: { ...req.session.user, created_at: dbUser ? dbUser.created_at : null, nomor_whatsapp: dbUser ? dbUser.nomor_whatsapp : '' },
       cartCount,
       layout: 'customer-start',
       page: 'profile',
@@ -165,10 +223,15 @@ const CustomerController = {
   },
 
   async profileUpdate(req, res) {
-    const { full_name } = req.body;
+    const { full_name, nomor_whatsapp } = req.body;
+
+    console.log("Data form yang dikirim:", req.body);
+
     try {
-      await pool.query('UPDATE users SET full_name = ? WHERE id = ?', [full_name, req.session.user.id]);
+      await pool.query('UPDATE users SET full_name = ?, nomor_whatsapp = ? WHERE id = ?', [full_name, nomor_whatsapp, req.session.user.id]);
       req.session.user.full_name = full_name;
+      req.session.user.nomor_whatsapp = nomor_whatsapp;
+
       req.flash('success_msg', 'Profil berhasil diperbarui');
       res.redirect('/customer/profile');
     } catch (error) {
@@ -307,6 +370,11 @@ const CustomerController = {
         order.status_label = statusMap[order.status] || order.status;
       }
 
+      const [deliveries] = await pool.query(
+        `SELECT * FROM drone_deliveries WHERE user_id = ? ORDER BY created_at DESC`, 
+        [userId]
+      );
+
       const cartCount = Array.isArray(req.session.cart)
         ? req.session.cart.reduce((sum, it) => sum + (Number(it.quantity) || 0), 0)
         : 0;
@@ -314,6 +382,8 @@ const CustomerController = {
       res.render('customer/my_orders', {
         title: 'Pesanan Saya',
         orders,
+        deliveries, // ---> TAMBAHAN BARU: Lempar data drone ke EJS
+        moment: require('moment'), // ---> TAMBAHAN BARU: Wajib ada agar format tanggal di EJS tidak error
         cartCount,
         layout: 'customer-start',
         page: 'orders',
@@ -325,7 +395,6 @@ const CustomerController = {
       res.redirect('/customer/order');
     }
   },
-
 
   async addToCart(req, res) {
     const { menu_id, quantity, spicy_level, sambal_type, variant } = req.body;

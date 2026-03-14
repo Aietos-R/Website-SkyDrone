@@ -6,6 +6,9 @@ const { isCustomer } = require('../middleware/auth');
 router.use(isCustomer);
 
 router.get('/beranda', CustomerController.renderBeranda);
+router.get('/send', CustomerController.renderSend);
+router.post('/send/direct', CustomerController.submitSendDirect);
+router.post('/send/setpoint', CustomerController.submitSendSetpoint);
 router.get('/restaurant/mcd', CustomerController.renderMcd);
 router.get('/restaurant/arema', CustomerController.renderArema);
 router.get('/restaurant', CustomerController.renderRestaurantList);
