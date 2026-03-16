@@ -226,7 +226,7 @@ body {
   width: 80px;
   height: 80px;
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  border-radius: 50%;
+  border-radius: 20%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -257,7 +257,8 @@ body {
 
 /* Main Content */
 .main-content {
-  padding: 3rem 0;
+  padding-top: 3rem;
+  padding-bottom: 0rem;
   /* min-height: 60vh; */
 }
 

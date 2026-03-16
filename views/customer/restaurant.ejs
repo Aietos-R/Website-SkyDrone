@@ -5,21 +5,46 @@
   cartCount: typeof cartCount !== 'undefined' ? cartCount : 0
 }) %>
 
-<div class="hero-section position-relative overflow-hidden" style="padding: 4rem 0 6rem; border-radius: 0 0 3rem 3rem;">
-    <div class="position-absolute rounded-circle" style="width: 250px; height: 250px; background: rgba(255,255,255,0.05); top: -50px; left: -50px;"></div>
+<div class="position-relative overflow-hidden bg-white" style="padding: 3.5rem 0 3rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
     
-    <div class="container text-center position-relative z-2">
-        <h1 class="display-5 fw-bold mb-3 text-white">
-            Pilih Restoran Favoritmu 🛵
-        </h1>
-        <p class="lead text-white-50 mb-4">
-            Jelajahi berbagai pilihan kuliner terbaik di setiap daerah.
-        </p>
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(247, 247, 248, 1) 0%, rgba(255, 255, 255, 1) 100%); z-index: 0;"></div>
+    
+    <div class="position-absolute rounded-circle" style="width: 300px; height: 300px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%); top: -80px; right: -80px; z-index: 1;"></div>
 
-        <div class="bg-white rounded-pill p-2 shadow-lg d-flex align-items-center position-relative z-3" style="max-width: 600px; margin: 0 auto;">
-            <i class="fas fa-search text-muted ms-3 me-2"></i>
-            <input type="text" id="searchResto" class="form-control border-0 shadow-none bg-transparent" placeholder="Cari nama restoran (misal: McD, Geprek)..." style="font-size: 1rem;">
-            <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Cari</button>
+    <div class="container position-relative z-2">
+        <div class="row align-items-center">
+            
+            <div class="col-lg-6 mb-4 mb-lg-0 text-center text-lg-start pe-lg-5">
+                <span class="badge px-3 py-2 rounded-pill mb-3 fw-bold" style="background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; font-size: 0.8rem; letter-spacing: 1px;">
+                    <i class="fas fa-store me-2"></i> KULINER PILIHAN
+                </span>
+                
+                <h1 class="display-5 fw-bold text-dark mb-3" style="line-height: 1.2; letter-spacing: -1px;">
+                    Pilih Restoran <span style="color: #7851A9;">Favoritmu 🛵</span>
+                </h1>
+                
+                <p class="text-muted mb-4 fw-normal" style="font-size: 1.05rem; max-width: 90%; margin: 0 auto; margin-lg-0;">
+                    Jelajahi berbagai pilihan kuliner terbaik di setiap daerah. Temukan rasa yang pas untuk hari ini!
+                </p>
+                
+                <div class="bg-white rounded-pill p-1 shadow-sm d-flex align-items-center position-relative mx-auto mx-lg-0" style="max-width: 500px; border: 1px solid rgba(0,0,0,0.05);">
+                    <i class="fas fa-search text-muted ms-3 me-2"></i>
+                    <input type="text" id="searchResto" class="form-control border-0 shadow-none bg-transparent" placeholder="Cari nama restoran (McD, dll)..." style="font-size: 0.95rem;">
+                    <button class="btn btn-primary rounded-pill px-4 py-2 fw-bold" style="background: linear-gradient(135deg,  #2563eb 0%, #7851A9 100%); border: none;">Cari</button>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 d-none d-lg-block text-center position-relative">
+                <div class="position-relative d-inline-block" style="animation: float 4s ease-in-out infinite;">
+                    
+                    <div class="bg-white rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 200px; height: 200px; border: 8px solid #f8fafc; z-index: 2; position: relative; margin: 0 auto;">
+                        <img src="/images/placeholders/menu.svg" alt="Ilustrasi Restoran" style="width: 100px; opacity: 0.8;">
+                    </div>
+                    
+                    <div class="position-absolute" style="bottom: -15px; left: 50%; transform: translateX(-50%); width: 100px; height: 10px; background: rgba(0,0,0,0.1); filter: blur(6px); border-radius: 50%;"></div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

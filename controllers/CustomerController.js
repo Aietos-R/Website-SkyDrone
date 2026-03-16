@@ -182,7 +182,7 @@ const CustomerController = {
       const cartCount = cart.reduce((sum, it) => sum + (Number(it.quantity) || 0), 0);
       const cartTotal = cart.reduce((sum, it) => sum + (Number(it.price) || 0) * (Number(it.quantity) || 0), 0);
 
-      res.render('customer/order', {
+      res.render('customer/beranda', {
         title: 'Pesan Online',
         categories: grouped,
         cartCount,
@@ -392,7 +392,7 @@ const CustomerController = {
     } catch (error) {
       console.error('My Orders error:', error);
       req.flash('error_msg', 'Gagal memuat pesanan');
-      res.redirect('/customer/order');
+      res.redirect('/customer/orders');
     }
   },
 
@@ -415,7 +415,7 @@ const CustomerController = {
       if (!menu) {
         return req.xhr || req.headers.accept.indexOf('json') > -1 
           ? res.status(404).json({ success: false, message: 'Menu not found' })
-          : res.redirect('/customer/order');
+          : res.redirect('/customer/cart');
       }
 
       const item = {
@@ -457,7 +457,7 @@ const CustomerController = {
       if (req.xhr || req.headers.accept.indexOf('json') > -1) {
         return res.status(500).json({ success: false, message: 'Internal server error' });
       }
-      res.redirect('/customer/order');
+      res.redirect('/customer/cart');
     }
   },
 
@@ -537,7 +537,7 @@ const CustomerController = {
 
   async checkout(req, res) {
     const cart = Array.isArray(req.session.cart) ? req.session.cart : [];
-    if (!cart.length) return res.redirect('/customer/order');
+    if (!cart.length) return res.redirect('/customer/cart');
 
     const invoice = generateInvoice();
     const total = cart.reduce((sum, it) => sum + it.price * it.quantity, 0);
