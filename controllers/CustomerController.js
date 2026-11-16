@@ -50,13 +50,13 @@ const CustomerController = {
   // Fungsi Simpan Pengiriman Langsung (Alamat)
   async submitSendDirect(req, res) {
     try {
-      const { receiver_name, receiver_phone, receiver_address, item_category, item_weight } = req.body;
+      const { pickup_address, receiver_name, receiver_phone, receiver_address, item_category, item_weight } = req.body;
       const userId = req.session.user.id;
 
       await pool.query(
-        `INSERT INTO drone_deliveries (user_id, delivery_type, receiver_name, receiver_phone, receiver_address, item_category, item_weight) 
-         VALUES (?, 'direct', ?, ?, ?, ?, ?)`,
-        [userId, receiver_name, receiver_phone, receiver_address, item_category, item_weight]
+        `INSERT INTO drone_deliveries (user_id, delivery_type, pickup_address, receiver_name, receiver_phone, receiver_address, item_category, item_weight) 
+         VALUES (?, 'direct', ?, ?, ?, ?, ?, ?)`,
+        [userId, pickup_address, receiver_name, receiver_phone, receiver_address, item_category, item_weight]
       );
 
       req.flash('success_msg', 'Pengiriman diproses! Drone sedang menuju lokasi Anda.');
@@ -72,12 +72,13 @@ const CustomerController = {
   async submitSendSetpoint(req, res) {
     try {
       const { setpoint_location, receiver_name, receiver_phone, item_category, item_weight, pickup_pin } = req.body;
+      const { pickup_address } = req.body;
       const userId = req.session.user.id;
 
       await pool.query(
-        `INSERT INTO drone_deliveries (user_id, delivery_type, receiver_name, receiver_phone, setpoint_location, item_category, item_weight, pickup_pin) 
-         VALUES (?, 'setpoint', ?, ?, ?, ?, ?, ?)`,
-        [userId, receiver_name, receiver_phone, setpoint_location, item_category, item_weight, pickup_pin]
+        `INSERT INTO drone_deliveries (user_id, delivery_type, pickup_address, receiver_name, receiver_phone, setpoint_location, item_category, item_weight, pickup_pin) 
+         VALUES (?, 'setpoint', ?, ?, ?, ?, ?, ?, ?)`,
+        [userId, pickup_address, receiver_name, receiver_phone, setpoint_location, item_category, item_weight, pickup_pin]
       );
 
       res.json({ success: true, message: 'Data berhasil disimpan' });
@@ -392,6 +393,43 @@ const CustomerController = {
     } catch (error) {
       console.error('My Orders error:', error);
       req.flash('error_msg', 'Gagal memuat pesanan');
+      res.redirect('/customer/orders');
+    }
+  },
+
+  // Fungsi untuk menampilkan halaman Live Tracking Drone
+  async renderTrack(req, res) {
+    try {
+      const deliveryId = req.params.id;
+      const userId = req.session.user.id;
+
+      // Ambil data pengiriman spesifik milik user ini
+      const [deliveries] = await pool.query(
+        'SELECT * FROM drone_deliveries WHERE id = ? AND user_id = ?', 
+        [deliveryId, userId]
+      );
+      
+      if (deliveries.length === 0) {
+        req.flash('error_msg', 'Data pengiriman tidak ditemukan.');
+        return res.redirect('/customer/orders');
+      }
+
+      const delivery = deliveries[0];
+      
+      // Hitung keranjang untuk navbar
+      const cart = Array.isArray(req.session.cart) ? req.session.cart : [];
+      const cartCount = cart.reduce((sum, it) => sum + (Number(it.quantity) || 0), 0);
+
+      res.render('customer/track', {
+        title: 'Lacak Drone',
+        page: 'orders', // Tetap highlight menu orders di navbar
+        user: req.session.user,
+        cartCount: cartCount,
+        delivery: delivery,
+        moment: require('moment')
+      });
+    } catch (error) {
+      console.error('Track error:', error);
       res.redirect('/customer/orders');
     }
   },

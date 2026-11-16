@@ -20,6 +20,7 @@ router.post('/checkout', CustomerController.checkout);
 router.post('/payment/complete', CustomerController.paymentComplete);
 router.post('/payment/cancel', CustomerController.paymentCancel);
 router.get('/orders', CustomerController.myOrders);
+router.get('/track/:id', CustomerController.renderTrack);
 router.get('/profile', CustomerController.profileForm);
 router.post('/profile', CustomerController.profileUpdate);
 router.post('/profile/password', CustomerController.profileChangePassword);

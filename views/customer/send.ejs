@@ -61,30 +61,41 @@
                         </li>
                     </ul>
 
-                    <div class="tab-content" id="deliveryTabContent">
+<div class="tab-content" id="deliveryTabContent">
                         
+                        <!-- TAB 1: KIRIM LANGSUNG -->
                         <div class="tab-pane fade show active" id="direct-delivery" role="tabpanel" aria-labelledby="direct-tab">
                             <form action="/customer/send/direct" method="POST">
-                                <h5 class="fw-bold text-dark border-bottom pb-2 mb-4"><i class="fas fa-map-marker-alt text-danger me-2"></i>Info Tujuan (Alamat Langsung)</h5>
                                 
+                                <!-- TAMBAHAN: ALAMAT PENGAMBILAN -->
+                                <h5 class="fw-bold text-dark border-bottom pb-2 mb-4"><i class="fas fa-home text-warning me-2"></i>Info Penjemputan (Alamat Anda)</h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-12">
+                                        <label class="form-label text-muted small fw-bold">Alamat Lengkap Pengambilan Barang</label>
+                                        <textarea name="pickup_address" class="form-control bg-light border-0 shadow-sm" rows="2" placeholder="Jalan, RT/RW, Patokan rumah agar drone mudah menjemput..." required></textarea>
+                                    </div>
+                                </div>
+                                <!-- AKHIR TAMBAHAN -->
+
+                                <h5 class="fw-bold text-dark border-bottom pb-2 mb-4"><i class="fas fa-map-marker-alt text-danger me-2"></i>Info Tujuan (Alamat Langsung)</h5>
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-6">
                                         <label class="form-label text-muted small fw-bold">Nama Penerima</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-light border-0"><i class="fas fa-user text-muted"></i></span>
-                                            <input type="text" name="receiver_name" class="form-control bg-light border-0" placeholder="Contoh: Budi Santoso" required>
+                                            <input type="text" name="receiver_name" class="form-control bg-light border-0 shadow-sm" placeholder="Contoh: Budi Santoso" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label text-muted small fw-bold">No. HP Penerima</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-light border-0"><i class="fas fa-phone text-muted"></i></span>
-                                            <input type="text" name="receiver_phone" class="form-control bg-light border-0" placeholder="0812xxxxxx" required>
+                                            <input type="text" name="receiver_phone" class="form-control bg-light border-0 shadow-sm" placeholder="0812xxxxxx" required>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label text-muted small fw-bold">Alamat Lengkap Tujuan</label>
-                                        <textarea name="receiver_address" class="form-control bg-light border-0" rows="3" placeholder="Jalan, RT/RW, Patokan gedung..." required></textarea>
+                                        <textarea name="receiver_address" class="form-control bg-light border-0 shadow-sm" rows="3" placeholder="Jalan, RT/RW, Patokan gedung..." required></textarea>
                                     </div>
                                 </div>
 
@@ -92,7 +103,7 @@
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-6">
                                         <label class="form-label text-muted small fw-bold">Kategori Barang</label>
-                                        <select name="item_category" class="form-select bg-light border-0" required>
+                                        <select name="item_category" class="form-select bg-light border-0 shadow-sm" required>
                                             <option value="">Pilih Kategori...</option>
                                             <option value="dokumen">Dokumen</option>
                                             <option value="makanan">Makanan/Minuman</option>
@@ -102,7 +113,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label text-muted small fw-bold">Estimasi Berat (Kg)</label>
-                                        <div class="input-group">
+                                        <div class="input-group shadow-sm rounded">
                                             <input type="number" name="item_weight" class="form-control bg-light border-0" min="1" max="5" placeholder="Maks. 5 Kg (Kapasitas Drone)" required>
                                             <span class="input-group-text bg-light border-0">Kg</span>
                                         </div>
@@ -115,6 +126,7 @@
                             </form>
                         </div>
 
+                        <!-- TAB 2: AMBIL DI SETPOINT -->
                         <div class="tab-pane fade" id="setpoint-delivery" role="tabpanel" aria-labelledby="setpoint-tab">
                             <form id="formSetpoint" action="/customer/send/setpoint" method="POST">
                                 
@@ -125,7 +137,17 @@
                                     </div>
                                 </div>
 
-                                <h5 class="fw-bold text-dark border-bottom pb-2 mb-4"><i class="fas fa-building text-success me-2"></i>Pilih Lokasi Setpoint</h5>
+                                <!-- TAMBAHAN: ALAMAT PENGAMBILAN -->
+                                <h5 class="fw-bold text-dark border-bottom pb-2 mb-4"><i class="fas fa-home text-warning me-2"></i>Info Penjemputan (Alamat Anda)</h5>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-12">
+                                        <label class="form-label text-muted small fw-bold">Alamat Lengkap Pengambilan Barang</label>
+                                        <textarea name="pickup_address" class="form-control bg-light border-0 shadow-sm" rows="2" placeholder="Jalan, RT/RW, Patokan rumah agar drone mudah menjemput..." required></textarea>
+                                    </div>
+                                </div>
+                                <!-- AKHIR TAMBAHAN -->
+
+                                <h5 class="fw-bold text-dark border-bottom pb-2 mb-4"><i class="fas fa-building text-success me-2"></i>Pilih Lokasi Setpoint (Tujuan)</h5>
                                 
                                 <div class="row g-3 mb-4">
                                     <div class="col-12">
@@ -146,11 +168,11 @@
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-6">
                                         <label class="form-label text-muted small fw-bold">Nama Penerima</label>
-                                        <input type="text" name="receiver_name" class="form-control bg-light border-0" placeholder="Budi Santoso" required>
+                                        <input type="text" name="receiver_name" class="form-control bg-light border-0 shadow-sm" placeholder="Budi Santoso" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label text-muted small fw-bold">No. WhatsApp Penerima (Untuk kirim PIN)</label>
-                                        <input type="text" name="receiver_phone" class="form-control bg-light border-0" placeholder="0812xxxxxx" required>
+                                        <input type="text" name="receiver_phone" class="form-control bg-light border-0 shadow-sm" placeholder="0812xxxxxx" required>
                                     </div>
                                 </div>
 
@@ -158,7 +180,7 @@
                                 <div class="row g-3 mb-5">
                                     <div class="col-md-6">
                                         <label class="form-label text-muted small fw-bold">Kategori Barang</label>
-                                        <select name="item_category" class="form-select bg-light border-0" required>
+                                        <select name="item_category" class="form-select bg-light border-0 shadow-sm" required>
                                             <option value="">Pilih Kategori...</option>
                                             <option value="dokumen">Dokumen Rahasia</option>
                                             <option value="makanan">Makanan</option>
@@ -167,7 +189,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label text-muted small fw-bold">Estimasi Berat (Kg)</label>
-                                        <input type="number" name="item_weight" class="form-control bg-light border-0" min="1" max="5" placeholder="Maks. 5 Kg" required>
+                                        <input type="number" name="item_weight" class="form-control bg-light border-0 shadow-sm" min="1" max="5" placeholder="Maks. 5 Kg" required>
                                     </div>
                                 </div>
 

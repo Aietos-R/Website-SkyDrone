@@ -1,7 +1,7 @@
 {
-  "name": "high-tech-kuliner",
+  "name": "high-tech-skydrone",
   "version": "1.0.0",
-  "description": "Sistem Manajemen Ayam Geprek Arema - UAS IF451",
+  "description": "Website SkyDrone",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

@@ -1,4 +1,4 @@
-Judul: Dependensi yang harus diinstal untuk proyek High-Tech Kuliner
+Judul: Dependensi yang harus diinstal untuk proyek High-Tech skydrone
 
 Perangkat lunak sistem:
 - Node.js (disarankan v18 atau lebih baru)

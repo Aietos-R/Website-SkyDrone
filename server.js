@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Session
 app.use(session({
   name: 'htk.sid',
-  secret: process.env.SESSION_SECRET || 'high-tech-kuliner-secret-2025',
+  secret: process.env.SESSION_SECRET || 'high-tech-skydrone-secret-2025',
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
